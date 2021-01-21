@@ -123,4 +123,113 @@ function gradingStudents(grades) {
     }
     return sumGrade;
 }
-gradingStudents(grade);
+function countApplesAndOranges(s, t, a, b, apples, oranges) {
+    let newApples = [], newOranges = [];
+    apples.forEach((v) => newApples.push(v + a));
+    oranges.forEach((v) => newOranges.push(v + b));
+    newApples = newApples.filter((v) => v >= s && v <= t);
+    newOranges = newOranges.filter((v) => v >= s && v <= t);
+    console.log(newApples.length);
+    console.log(newOranges.length);
+}
+function kangaroo(x1, v1, x2, v2) {
+    const OK = 'YES', NO = 'NO';
+    if (x1 === x2 && v1 === v2) {
+        return OK;
+    }
+    else if (x1 === x2 && v1 !== v2) {
+        return NO;
+    }
+    let longestStart;
+    x1 > x2 ? (longestStart = 'x1') : (longestStart = 'x2');
+    switch (longestStart) {
+        case 'x1':
+            if (v1 >= v2) {
+                return NO;
+            }
+        case 'x2':
+            if (v2 >= v1) {
+                return NO;
+            }
+    }
+    let posKangaroo1 = x1, posKangaroo2 = x2;
+    for (let i = 0; i < 10000; i++) {
+        posKangaroo1 += v1;
+        posKangaroo2 += v2;
+        if (posKangaroo1 === posKangaroo2) {
+            return OK;
+        }
+    }
+    return NO;
+}
+const scores = [10, 5, 20, 20, 4, 5, 2, 25, 1];
+function breakingRecords(scores) {
+    let highest = scores[0], lowest = scores[0], highestCount = 0, lowestCount = 0;
+    for (const value of scores) {
+        if (value > highest) {
+            highest = value;
+            highestCount++;
+        }
+        if (value < lowest) {
+            lowest = value;
+            lowestCount++;
+        }
+    }
+    const sum = [highestCount, lowestCount];
+    return sum;
+}
+function divisibleSumPairs(n, k, ar) {
+    let pairs = 0;
+    for (let i = 0; i < n; i++) {
+        let newarr = ar.filter((value, index) => index > i);
+        for (const value of newarr) {
+            if ((ar[i] + value) % k === 0) {
+                pairs++;
+            }
+        }
+    }
+    return pairs;
+}
+function migratoryBirds(arr) {
+    let stack = {};
+    for (const value of arr) {
+        stack[value] = 0;
+    }
+    for (let i = 0; i < arr.length; i++) {
+        stack[arr[i]]++;
+    }
+    let stackAr = Object.entries(stack);
+    let pos = 0;
+    for (let j = 0; j < stackAr.length; j++) {
+        if (j !== stackAr.length - 1) {
+            if (stackAr[j][1] < stackAr[j + 1][1]) {
+                pos = j + 1;
+            }
+        }
+    }
+    let sum = stackAr[pos][0];
+    return sum;
+}
+function sockMerchant(n, ar) {
+    let matching = 0;
+    const check = {};
+    let obj;
+    for (const key of ar) {
+        check[key] = 0;
+    }
+    for (const val of ar) {
+        check[val]++;
+    }
+    obj = Object.entries(check);
+    obj.map((el) => {
+        matching += Math.floor(el[1] / 2);
+    });
+    return matching;
+}
+function bonAppetit(bill, k, b) {
+    let totalBill;
+    let arr = bill.filter((value, index) => index != k);
+    totalBill = arr.reduce((a, b) => a + b);
+    totalBill = b - totalBill / 2;
+    totalBill <= 0 ? console.log('Bon Appetit') : console.log(totalBill);
+}
