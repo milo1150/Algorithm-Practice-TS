@@ -233,3 +233,136 @@ function bonAppetit(bill, k, b) {
     totalBill = b - totalBill / 2;
     totalBill <= 0 ? console.log('Bon Appetit') : console.log(totalBill);
 }
+function pageCount(n, p) {
+    let count = 0, openToRight = 0, openToLeft = 0;
+    let arr = [];
+    for (let i = 1; i <= n; i++) {
+        arr.push(i);
+    }
+    for (let i = 0, j = 0; j <= arr.length; j += 2, i++) {
+        if (j === p || j + 1 === p) {
+            openToRight = i;
+            break;
+        }
+    }
+    let startFromRight = arr.length;
+    arr.length % 2 !== 0 ? (startFromRight = arr.length - 1) : null;
+    for (let i = 0, j = startFromRight; j > 0; j -= 2, i++) {
+        if (j === p || j + 1 === p) {
+            openToLeft = i;
+            break;
+        }
+    }
+    openToRight > openToLeft ? (count = openToLeft) : (count = openToRight);
+    return count;
+}
+function countingValleys(steps, path) {
+    let valley = 0, checkzero = 0, currentStatus = 'sea';
+    for (const v of path) {
+        const check = [];
+        check.push(currentStatus);
+        switch (v) {
+            case 'U':
+                valley++;
+                break;
+            case 'D':
+                valley--;
+                break;
+        }
+        switch (Math.sign(valley)) {
+            case 0:
+                currentStatus = 'sea';
+                check.push(currentStatus);
+                break;
+            case 1:
+                currentStatus = 'over-sea';
+                check.push(currentStatus);
+                break;
+            case -1:
+                currentStatus = 'under-sea';
+                check.push(currentStatus);
+                break;
+        }
+        if (check[0] === 'under-sea' && check[1] === 'sea') {
+            checkzero++;
+        }
+    }
+    return checkzero;
+}
+function getMoneySpent(keyboards, drives, b) {
+    let BestDiffVal = b, BestDiffPos = 0, BestVal = 0;
+    const stack = [];
+    for (let i = 0; i < keyboards.length; i++) {
+        for (let j = 0; j < drives.length; j++) {
+            let sum = keyboards[i] + drives[j];
+            stack.push(sum);
+        }
+    }
+    for (let i = 0; i < stack.length; i++) {
+        let diff = b - stack[i];
+        if (diff <= BestDiffVal && diff >= 0) {
+            BestDiffVal = diff;
+            BestDiffPos = i;
+        }
+    }
+    b === BestDiffVal ? (BestVal = -1) : (BestVal = stack[BestDiffPos]);
+    return BestVal;
+}
+function catAndMouse(x, y, z) {
+    let range = '';
+    let catArange = Math.abs(x - z);
+    let catBrange = Math.abs(y - z);
+    if (catArange < catBrange) {
+        range = 'Cat A';
+    }
+    else if (catBrange < catArange) {
+        range = 'Cat B';
+    }
+    else if (catArange === catBrange) {
+        range = 'Mouse C';
+    }
+    return range;
+}
+function pickingNumbers(a) {
+    const header = a.sort().filter((value, index, arr) => {
+        return arr[index] !== arr[index + 1];
+    });
+    let stack = [];
+    for (let i = 0; i < header.length; i++) {
+        const subStack = [];
+        for (let j = 0; j < a.length; j++) {
+            let sum = header[i] - a[j];
+            if (sum === 0 || sum === -1)
+                subStack.push(a[j]);
+        }
+        stack.push(subStack);
+    }
+    let final = stack[0].length;
+    for (let i = 0; i < stack.length - 1; i++) {
+        if (stack[i + 1].length > final) {
+            final = stack[i + 1].length;
+        }
+    }
+    return final;
+}
+function hurdleRace(k, height) {
+    let potion = 0;
+    for (const v of height) {
+        let diff = k - v;
+        diff < potion ? (potion = diff) : null;
+    }
+    return Math.abs(potion);
+}
+function designerOdfViewer(h, word) {
+    const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+    const stack = [];
+    let max = 0;
+    for (let w of word) {
+        let pos = alphabet.indexOf(w);
+        stack.push(h[pos]);
+    }
+    for (let v of stack)
+        if (v > max)
+            max = v;
+    return max * stack.length;
+}

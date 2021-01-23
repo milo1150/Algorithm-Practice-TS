@@ -363,3 +363,196 @@ function bonAppetit(bill: number[], k: number, b: number): void {
 }
 // bonAppetit([3, 10, 2, 9], 1, 12);
 // bonAppetit([3, 10, 2, 9], 1, 7);
+
+/**
+ * Drawing Book
+ * https://www.hackerrank.com/challenges/drawing-book/problem
+ */
+function pageCount(n: number, p: number): number {
+  let count: number = 0,
+    openToRight: number = 0,
+    openToLeft: number = 0;
+  let arr: number[] = [];
+  for (let i = 1; i <= n; i++) {
+    arr.push(i);
+  }
+  // console.log('TO RIGHT');
+  for (let i = 0, j = 0; j <= arr.length; j += 2, i++) {
+    // console.log('j:', j, 'i:', i);
+    if (j === p || j + 1 === p) {
+      openToRight = i;
+      break;
+    }
+  }
+  // console.log('TO LEFT');
+  let startFromRight: number = arr.length;
+  arr.length % 2 !== 0 ? (startFromRight = arr.length - 1) : null;
+  for (let i = 0, j = startFromRight; j > 0; j -= 2, i++) {
+    // console.log('j:', j, 'i:', i);
+    if (j === p || j + 1 === p) {
+      openToLeft = i;
+      break;
+    }
+  }
+  // console.log(openToRight, openToLeft);
+  openToRight > openToLeft ? (count = openToLeft) : (count = openToRight);
+  return count;
+}
+// pageCount(6, 2);
+// pageCount(5, 4);
+// pageCount(10, 5);
+
+/**
+ * Counting Valleys
+ * https://www.hackerrank.com/challenges/counting-valleys/problem
+ */
+function countingValleys(steps: number, path: string[]): number {
+  type status = 'sea' | 'under-sea' | 'over-sea';
+  let valley: number = 0,
+    checkzero: number = 0,
+    currentStatus: status = 'sea';
+  for (const v of path) {
+    const check: status[] = [];
+    check.push(currentStatus);
+    switch (v) {
+      case 'U':
+        valley++;
+        break;
+      case 'D':
+        valley--;
+        break;
+    }
+    switch (Math.sign(valley)) {
+      case 0:
+        currentStatus = 'sea';
+        check.push(currentStatus);
+        break;
+      case 1:
+        currentStatus = 'over-sea';
+        check.push(currentStatus);
+        break;
+      case -1:
+        currentStatus = 'under-sea';
+        check.push(currentStatus);
+        break;
+    }
+    if (check[0] === 'under-sea' && check[1] === 'sea') {
+      checkzero++;
+    }
+  }
+  // console.log(checkzero);
+  return checkzero;
+}
+// countingValleys(8, ['U', 'D', 'D', 'D', 'U', 'D', 'U', 'U']);
+
+/**
+ * Electronics Shop
+ * https://www.hackerrank.com/challenges/electronics-shop/problem
+ */
+function getMoneySpent(
+  keyboards: number[],
+  drives: number[],
+  b: number
+): number {
+  let BestDiffVal: number = b,
+    BestDiffPos: number = 0,
+    BestVal: number = 0;
+  const stack: number[] = [];
+  for (let i = 0; i < keyboards.length; i++) {
+    for (let j = 0; j < drives.length; j++) {
+      let sum: number = keyboards[i] + drives[j];
+      stack.push(sum);
+    }
+  }
+  // console.log(stack);
+  for (let i = 0; i < stack.length; i++) {
+    let diff: number = b - stack[i];
+    if (diff <= BestDiffVal && diff >= 0) {
+      BestDiffVal = diff;
+      BestDiffPos = i;
+    }
+  }
+  b === BestDiffVal ? (BestVal = -1) : (BestVal = stack[BestDiffPos]);
+  return BestVal;
+}
+// getMoneySpent([3, 1], [5, 2, 8], 10);
+// getMoneySpent([4], [5], 5);
+
+/**
+ * Cat and a Mouse
+ * https://www.hackerrank.com/challenges/cats-and-a-mouse/problem
+ */
+function catAndMouse(x: number, y: number, z: number): string {
+  type output = 'Cat A' | 'Cat B' | 'Mouse C' | '';
+  let range: output = '';
+  let catArange = Math.abs(x - z);
+  let catBrange = Math.abs(y - z);
+  if (catArange < catBrange) {
+    range = 'Cat A';
+  } else if (catBrange < catArange) {
+    range = 'Cat B';
+  } else if (catArange === catBrange) {
+    range = 'Mouse C';
+  }
+  return range;
+}
+
+/**
+ * Picking Numbers
+ * https://www.hackerrank.com/challenges/picking-numbers/problem
+ */
+function pickingNumbers(a: number[]): number {
+  const header: number[] = a.sort().filter((value, index, arr) => {
+    return arr[index] !== arr[index + 1];
+  });
+  let stack: Array<number[]> = [];
+  for (let i = 0; i < header.length; i++) {
+    const subStack: number[] = [];
+    for (let j = 0; j < a.length; j++) {
+      let sum: number = header[i] - a[j];
+      if (sum === 0 || sum === -1) subStack.push(a[j]);
+    }
+    stack.push(subStack);
+  }
+  let final: number = stack[0].length;
+  for (let i = 0; i < stack.length - 1; i++) {
+    if (stack[i + 1].length > final) {
+      final = stack[i + 1].length;
+    }
+  }
+  return final;
+}
+// pickingNumbers([1, 1, 2, 2, 4, 4, 5, 5, 5]);
+// pickingNumbers([4, 6, 5, 3, 3, 1]);
+// pickingNumbers([1, 2, 2, 3, 1, 2]);
+
+/**
+ * The Hurdle Race
+ * https://www.hackerrank.com/challenges/the-hurdle-race/problem
+ */
+function hurdleRace(k: number, height: number[]): number {
+  let potion: number = 0;
+  for (const v of height) {
+    let diff: number = k - v;
+    diff < potion ? (potion = diff) : null;
+  }
+  return Math.abs(potion);
+}
+// hurdleRace(4, [1, 6, 3, 5, 2]);
+// hurdleRace(7, [2, 5, 4, 5, 2]);
+
+/**
+ * Designer PDF Viewer
+ * https://www.hackerrank.com/challenges/designer-pdf-viewer/problem
+ */
+function designerOdfViewer(h: number[], word: string): number {
+  const alphabet: string = 'abcdefghijklmnopqrstuvwxyz';
+  const stack: number[] = [];
+  let max: number = 0;
+  for (let w of word) {
+    let pos: number = alphabet.indexOf(w);
+    stack.push(h[pos]);
+  }
+  for (let v of stack) if (v > max) max = v;
+  return max * stack.length;
+}
