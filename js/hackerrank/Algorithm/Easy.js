@@ -366,3 +366,159 @@ function designerOdfViewer(h, word) {
             max = v;
     return max * stack.length;
 }
+function utopianTree(n) {
+    let max = n;
+    let height = 1;
+    const stack = [];
+    for (let i = 0; i <= max; i++) {
+        if (i === 0)
+            height = 1;
+        else if (i % 2 === 0)
+            height += 1;
+        else if (i % 2 !== 0)
+            height *= 2;
+        stack.push(height);
+    }
+    return stack[n];
+}
+function angryProfessor(k, a) {
+    let ok = 0, sum = 0, cancel = 'NO';
+    for (const v of a) {
+        if (Math.sign(v) === -1 || Math.sign(v) === 0)
+            ok++;
+    }
+    sum = k - ok;
+    sum <= 0 ? (cancel = 'NO') : (cancel = 'YES');
+    return cancel;
+}
+function beautifulDays(i, j, k) {
+    let countBeautiful = 0;
+    for (let s = i; s <= j; s++) {
+        let newNum = [];
+        let oldNum = s.toString().split('');
+        for (let i = oldNum.length - 1; i >= 0; i--) {
+            newNum.push(oldNum[i]);
+        }
+        newNum = parseInt(newNum.join(''));
+        let beautiful = Math.abs((s - newNum) / k);
+        if (Number.isInteger(beautiful))
+            countBeautiful++;
+    }
+    return countBeautiful;
+}
+function viralAdvertising(n) {
+    const adsTable = [];
+    let shared = 5;
+    for (let i = 1; i <= n; i++) {
+        const dayArr = [];
+        dayArr.push(i);
+        if (i === 1)
+            dayArr.push(shared);
+        else {
+            shared = Math.floor(shared / 2) * 3;
+            dayArr.push(shared);
+        }
+        let liked = Math.floor(shared / 2);
+        dayArr.push(liked);
+        let cumulative = 0;
+        if (i === 1)
+            dayArr.push(Math.floor(shared / 2));
+        else {
+            cumulative = adsTable[i - 2][3] + Math.floor(liked);
+            dayArr.push(cumulative);
+        }
+        adsTable.push(dayArr);
+    }
+    return adsTable[n - 1][3];
+}
+function saveThePrisoner(n, m, s) {
+    console.time('start');
+    let prisoner = n, sweets = m, seat = s;
+    let lastNumber = s;
+    for (let i = 0; i < sweets - 1; i++) {
+        if (seat === prisoner) {
+            seat = 0;
+        }
+        seat++;
+        lastNumber = seat;
+    }
+    console.log(lastNumber);
+    console.timeEnd('start');
+    return lastNumber;
+}
+function circularArrayRotation(a, k, queries) {
+    const stack = a;
+    for (let i = 0; i < k; i++) {
+        let lastIndex = stack.pop();
+        stack.splice(0, 0, lastIndex);
+    }
+    const returnQ = [];
+    for (const v of queries) {
+        returnQ.push(stack[v]);
+    }
+    return returnQ;
+}
+function jumpingOnClouds(c, k) {
+    let energy = 100;
+    let currentIndex = 0;
+    let status = true;
+    while (status) {
+        if (currentIndex >= c.length) {
+            let over = currentIndex - c.length;
+            currentIndex = over;
+            if (currentIndex === 0) {
+                if (c[currentIndex] === 0)
+                    energy -= 1;
+                else if (c[currentIndex] === 1)
+                    energy -= 3;
+                break;
+            }
+        }
+        if (currentIndex !== 0) {
+            if (c[currentIndex] === 0)
+                energy -= 1;
+            else if (c[currentIndex] === 1)
+                energy -= 3;
+        }
+        currentIndex += k;
+    }
+    return energy;
+}
+function findDigits(n) {
+    let count = 0;
+    for (let v of n.toString().split('')) {
+        let val = parseInt(v);
+        if (n % val === 0)
+            count++;
+    }
+    return count;
+}
+function appendAndDelete(s, t, k) {
+    let longest = 0;
+    let diff = 0;
+    let s2t = 0;
+    s.length > t.length ? (longest = s.length) : t.length;
+    for (let i = 0; i < longest; i++) {
+        console.log(s.charAt(i));
+        console.log(t.charAt(i));
+        if (t.charAt(i) === '')
+            diff++;
+        if (s.charAt(i) !== t.charAt(i)) {
+            s2t++;
+            diff++;
+        }
+    }
+    console.log('diff:', diff);
+    console.log('s2t:', s2t);
+    if (k === s2t + diff || (k >= s2t && k <= diff)) {
+        console.log('YES');
+        return 'Yes';
+    }
+    else {
+        console.log('NO');
+        return 'No';
+    }
+}
+appendAndDelete('hackerhappy', 'hackerrank', 9);
+appendAndDelete('aba', 'aba', 7);
+appendAndDelete('ashley', 'ash', 2);

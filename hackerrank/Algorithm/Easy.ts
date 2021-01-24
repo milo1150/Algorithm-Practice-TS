@@ -556,3 +556,230 @@ function designerOdfViewer(h: number[], word: string): number {
   for (let v of stack) if (v > max) max = v;
   return max * stack.length;
 }
+
+/**
+ * Utopian Tree
+ * https://www.hackerrank.com/challenges/utopian-tree/problem
+ */
+function utopianTree(n: number): number {
+  let max: number = n;
+  let height: number = 1;
+  const stack: number[] = [];
+  for (let i = 0; i <= max; i++) {
+    if (i === 0) height = 1;
+    else if (i % 2 === 0) height += 1;
+    else if (i % 2 !== 0) height *= 2;
+    stack.push(height);
+  }
+  return stack[n];
+}
+// utopianTree(5);
+
+/**
+ * Angry Professor
+ * https://www.hackerrank.com/challenges/angry-professor/problem
+ */
+type cancelClass = 'YES' | 'NO';
+function angryProfessor(k: number, a: number[]): cancelClass {
+  let ok: number = 0,
+    sum: number = 0,
+    cancel: cancelClass = 'NO';
+  for (const v of a) {
+    if (Math.sign(v) === -1 || Math.sign(v) === 0) ok++;
+  }
+  sum = k - ok;
+  sum <= 0 ? (cancel = 'NO') : (cancel = 'YES');
+  return cancel;
+}
+// angryProfessor(3, [-1, -3, 4, 2]);
+// angryProfessor(2, [0, -1, 2, 1]);
+// angryProfessor(4, [-93, -86, 49, -62, -90, -63, 40, 72, 11, 67]);
+
+/**
+ * Beautiful Days at the Movies
+ * https://www.hackerrank.com/challenges/beautiful-days-at-the-movies/problem
+ * hide console.log inside this function because it affect long time to exe
+ */
+function beautifulDays(i: number, j: number, k: number): number {
+  let countBeautiful: number = 0;
+  for (let s = i; s <= j; s++) {
+    let newNum: string[] | number = [];
+    let oldNum: string[] = s.toString().split('');
+    for (let i = oldNum.length - 1; i >= 0; i--) {
+      newNum.push(oldNum[i]);
+    }
+    newNum = parseInt(newNum.join(''));
+    let beautiful: number = Math.abs((s - newNum) / k);
+    if (Number.isInteger(beautiful)) countBeautiful++;
+  }
+  return countBeautiful;
+}
+// beautifulDays(20, 23, 6);
+// beautifulDays(1230, 1235, 7);
+// beautifulDays(819945, 946749, 8946432);
+
+/**
+ * Viral Advertising
+ * https://www.hackerrank.com/challenges/strange-advertising/problem
+ */
+function viralAdvertising(n: number): number {
+  const adsTable: number[][] = [];
+  let shared: number = 5;
+  for (let i = 1; i <= n; i++) {
+    // Array
+    const dayArr: number[] = [];
+    // Day
+    dayArr.push(i);
+    // Shared
+    if (i === 1) dayArr.push(shared);
+    else {
+      shared = Math.floor(shared / 2) * 3;
+      dayArr.push(shared);
+    }
+    // Liked
+    let liked: number = Math.floor(shared / 2);
+    dayArr.push(liked);
+    // Cumulative
+    let cumulative: number = 0;
+    if (i === 1) dayArr.push(Math.floor(shared / 2));
+    else {
+      cumulative = adsTable[i - 2][3] + Math.floor(liked);
+      dayArr.push(cumulative);
+    }
+    // Push
+    adsTable.push(dayArr);
+  }
+  // console.table(adsTable);
+  return adsTable[n - 1][3];
+}
+// viralAdvertising(3);
+
+/**
+ * Save the Prisoner
+ * https://www.hackerrank.com/challenges/save-the-prisoner/problem
+ * Terminated due to timeout :(
+ */
+function saveThePrisoner(n: number, m: number, s: number): number {
+  console.time('start');
+  let prisoner: number = n,
+    sweets: number = m,
+    seat: number = s;
+  let lastNumber: number = s;
+  for (let i = 0; i < sweets - 1; i++) {
+    // console.log(lastNumber)
+    if (seat === prisoner) {
+      seat = 0;
+    }
+    seat++;
+    lastNumber = seat;
+  }
+  console.log(lastNumber);
+  console.timeEnd('start');
+  return lastNumber;
+}
+// saveThePrisoner(7, 19, 2);
+// saveThePrisoner(352926151, 380324688, 94730870);
+
+/**
+ * Circular Array Rotation
+ * https://www.hackerrank.com/challenges/circular-array-rotation/problem
+ */
+function circularArrayRotation(
+  a: number[],
+  k: number,
+  queries: number[]
+): number[] {
+  const stack: Array<number> = a;
+  for (let i = 0; i < k; i++) {
+    let lastIndex: any = stack.pop();
+    stack.splice(0, 0, lastIndex);
+  }
+  const returnQ: number[] = [];
+  for (const v of queries) {
+    returnQ.push(stack[v]);
+  }
+  return returnQ;
+}
+// circularArrayRotation([1, 2, 3], 2, [0, 1, 2]);
+// circularArrayRotation([3, 4, 5], 2, [1, 2]);
+
+/**
+ * Jumping on the Clouds
+ * https://www.hackerrank.com/challenges/jumping-on-the-clouds-revisited/problem
+ */
+type cloud = 0 | 1;
+function jumpingOnClouds(c: cloud[], k: number): number {
+  // console.table(c);
+  let energy: number = 100;
+  let currentIndex: number = 0;
+  let status: boolean = true;
+  while (status) {
+    if (currentIndex >= c.length) {
+      let over: number = currentIndex - c.length;
+      currentIndex = over;
+      // Back to start position c[0]
+      if (currentIndex === 0) {
+        if (c[currentIndex] === 0) energy -= 1;
+        else if (c[currentIndex] === 1) energy -= 3;
+        break;
+      }
+    }
+    // current position is not c[0]
+    if (currentIndex !== 0) {
+      if (c[currentIndex] === 0) energy -= 1;
+      else if (c[currentIndex] === 1) energy -= 3;
+    }
+    currentIndex += k;
+  }
+  return energy;
+}
+// jumpingOnClouds([0, 0, 1, 0, 0, 1, 1, 0], 2);
+// jumpingOnClouds([1, 1, 1, 0, 1, 1, 0, 0, 0, 0], 3);
+
+/**
+ * Find Digits
+ * https://www.hackerrank.com/challenges/find-digits/problem
+ */
+function findDigits(n: number): number {
+  let count: number = 0;
+  for (let v of n.toString().split('')) {
+    let val: number = parseInt(v);
+    if (n % val === 0) count++;
+  }
+  return count;
+}
+// findDigits(12);
+// findDigits(1012);
+
+/**
+ * Append and Delete
+ * https://www.hackerrank.com/challenges/append-and-delete/problem
+ */
+type AppendAndDelete = 'Yes' | 'No';
+function appendAndDelete(s: string, t: string, k: number): AppendAndDelete {
+  let longest: number = 0;
+  let diff: number = 0;
+  let s2t: number = 0;
+  s.length > t.length ? (longest = s.length) : t.length;
+  for (let i = 0; i < longest; i++) {
+    console.log(s.charAt(i));
+    console.log(t.charAt(i));
+    if (t.charAt(i) === '') diff++;
+    if (s.charAt(i) !== t.charAt(i)) {
+      s2t++;
+      diff++;
+    }
+  }
+  console.log('diff:', diff);
+  console.log('s2t:', s2t);
+  if (k === s2t + diff || (k >= s2t && k <= diff)) {
+    console.log('YES');
+    return 'Yes';
+  } else {
+    console.log('NO')
+    return 'No';
+  }
+}
+appendAndDelete('hackerhappy', 'hackerrank', 9);
+appendAndDelete('aba', 'aba', 7);
+appendAndDelete('ashley', 'ash', 2);
