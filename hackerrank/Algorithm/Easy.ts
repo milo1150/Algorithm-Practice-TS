@@ -755,31 +755,179 @@ function findDigits(n: number): number {
  * Append and Delete
  * https://www.hackerrank.com/challenges/append-and-delete/problem
  */
-type AppendAndDelete = 'Yes' | 'No';
-function appendAndDelete(s: string, t: string, k: number): AppendAndDelete {
-  let longest: number = 0;
-  let diff: number = 0;
-  let s2t: number = 0;
-  s.length > t.length ? (longest = s.length) : t.length;
-  for (let i = 0; i < longest; i++) {
-    console.log(s.charAt(i));
-    console.log(t.charAt(i));
-    if (t.charAt(i) === '') diff++;
-    if (s.charAt(i) !== t.charAt(i)) {
-      s2t++;
-      diff++;
-    }
+// type AppendAndDelete = 'Yes' | 'No';
+// function appendAndDelete(s: string, t: string, k: number): AppendAndDelete {
+//   console.log('s:', s);
+//   console.log('t:', t);
+//   console.log('k:', k);
+
+//   let longestLength: number,
+//     charDiffAt: number = 0,
+//     sToAdd: number = 0,
+//     sToDel: number = 0,
+//     performMin: number = 0,
+//     testCase: 0 | 1 | 2 = 0,
+//     canPerform: AppendAndDelete = 'No';
+
+//   s.length > t.length ? (longestLength = s.length) : (longestLength = t.length);
+//   console.log('longestLength:', longestLength);
+//   console.log('s.length:', s.length);
+//   console.log('t.length:', t.length);
+
+//   for (let i = 0; i < longestLength; i++) {
+//     const sChar: string = s.charAt(i);
+//     const tChar: string = t.charAt(i);
+//     if (sChar !== tChar) {
+//       charDiffAt = i;
+//       sToDel = s.length - charDiffAt;
+//       sToAdd = t.length - charDiffAt;
+//       performMin = sToAdd + sToDel;
+//       break;
+//     }
+//   }
+//   console.log('chardiffat:', charDiffAt);
+//   console.log('sToAdd:', sToAdd, 'sToDel:', sToDel);
+//   console.log('performMin:', performMin);
+
+//   /* CHECK CASE */
+//   if (sToAdd === sToDel) {
+//     console.log('equal');
+//   } else if (sToAdd < sToDel) {
+//     console.log('sTodel Bigger');
+//   } else if (sToAdd > sToDel) {
+//     console.log('sToAdd Bigger');
+//     if(performMin != k){
+
+//     }
+//   }
+
+//   console.log('\n');
+// }
+// console.log('output: YES');
+// appendAndDelete('hackerhappy', 'hackerrank', 9);
+// console.log('output: YES');
+// appendAndDelete('aba', 'aba', 7);
+// console.log('output: No');
+// appendAndDelete('ashley', 'ash', 2);
+// console.log('output: No');
+// appendAndDelete('y', 'yu', 2);
+// console.log('output: No');
+// appendAndDelete('abcd', 'abcdert', 10);
+// console.log('output: No');
+// appendAndDelete('qwerasdf', 'qwerbsdf', 6);
+// console.log('output: YES');
+// appendAndDelete('zzzzz', 'zzzzzzz', 4);
+// console.log('output: YES');
+// appendAndDelete('aaa', 'a', 5);
+// console.log('output: No');
+// appendAndDelete(
+//   'asdfqwertyuighjkzxcvasdfqwertyuighjkzxcvasdfqwertyuighjkzxcvasdfqwertyuighjkzxcvasdfqwertyuighjkzxcv',
+//   'bsdfqwertyuighjkzxcvasdfqwertyuighjkzxcvasdfqwertyuighjkzxcvasdfqwertyuighjkzxcvasdfqwertyuighjkzxcv',
+//   100
+// );
+// console.log('output: YES');
+// appendAndDelete(
+//   'asdfqwertyuighjkzxcvasdfqwertyuighjkzxcvasdfqwertyuighjkzxcvasdfqwertyuighjkzxcvasdfqwertyuighjkzxcv',
+//   'asdfqwertyuighjkzxcvasdfqwertyuighjkzxcvasdfqwertyuighjkzxcvasdfqwertyuighjkzxcvasdfqwertyuighjkzxcv',
+//   20
+// );
+
+/**
+ * Sherlock and Squares
+ * https://www.hackerrank.com/challenges/sherlock-and-squares/problem
+ */
+function squares(a: number, b: number): number {
+  let count: number = 0,
+    start: number = 1,
+    max: number = 0;
+  while (max < b) {
+    max = start * start;
+    if (max >= a && max <= b) count++;
+    start++;
   }
-  console.log('diff:', diff);
-  console.log('s2t:', s2t);
-  if (k === s2t + diff || (k >= s2t && k <= diff)) {
-    console.log('YES');
-    return 'Yes';
-  } else {
-    console.log('NO')
-    return 'No';
-  }
+  return count;
 }
-appendAndDelete('hackerhappy', 'hackerrank', 9);
-appendAndDelete('aba', 'aba', 7);
-appendAndDelete('ashley', 'ash', 2);
+// squares(100, 1000);
+
+/**
+ * Library Fine
+ * https://www.hackerrank.com/challenges/library-fine/problem
+ */
+function libraryFine(
+  d1: number,
+  m1: number,
+  y1: number,
+  d2: number,
+  m2: number,
+  y2: number
+): number {
+  let dateLate: number = d2 - d1,
+    monthLate: number = m2 - m1,
+    yearLate: number = y2 - y1,
+    totalFine: number = 0;
+  // console.log(dateLate, monthLate, yearLate);
+  let checkDate: number = Math.sign(dateLate),
+    checkMonth: number = Math.sign(monthLate),
+    checkYear: number = Math.sign(yearLate);
+  if (checkYear > 0) return totalFine;
+  else if (checkYear < 0) return (totalFine = 10000);
+  else if (checkMonth < 0) return (totalFine = 500 * Math.abs(monthLate));
+  else if (checkMonth > 0) return totalFine;
+  else if (checkDate < 0) return (totalFine = 15 * Math.abs(dateLate));
+  else return totalFine;
+}
+// 0
+// console.log(libraryFine(15, 7, 2014, 1, 7, 2015));
+// 10000
+// console.log(libraryFine(1, 1, 2015, 31, 12, 2014));
+// 0
+// console.log(libraryFine(28, 2, 2015, 15, 4, 2015));
+
+/**
+ * Cut the sticks
+ *https://www.hackerrank.com/challenges/cut-the-sticks/problem
+ */
+function cutTheSticks(arr: number[]): number[] {
+  let stack: number[] = arr;
+  const beforeCut: number[] = [];
+  beforeCut.push(arr.length);
+  while (stack.length > 0) {
+    let min: number = Math.min(...stack);
+    for (let i in stack) {
+      stack[i] = stack[i] - min;
+    }
+    // Clear Round
+    stack = stack.filter((value) => value != 0);
+    if (stack.length !== 0) beforeCut.push(stack.length);
+  }
+  return beforeCut;
+}
+// console.log(cutTheSticks([5, 4, 4, 2, 2, 8]));
+// console.log(cutTheSticks([1, 2, 3, 4, 3, 3, 2, 1]));
+
+/**
+ * Repeated String
+ * https://www.hackerrank.com/challenges/repeated-string/problem
+ */
+function repeatedString(s: string, n: number): number {
+  console.time('time');
+  let count: number = 0;
+  let textLength: number = s.length;
+  let indexOfA: number = s.indexOf('a');
+  console.log(s);
+  console.log('textLength:', textLength);
+  console.log(indexOfA);
+
+  console.timeEnd('time');
+  return count;
+}
+console.log(repeatedString('aba', 10));
+// console.log(
+//   repeatedString(
+//     'ojowrdcpavatfacuunxycyrmpbkvaxyrsgquwehhurnicgicmrpmgegftjszgvsgqavcrvdtsxlkxjpqtlnkjuyraknwxmnthfpt',
+//     685118368975
+//   )
+// );
+// console.log(repeatedString('ovsgqavcrvd', 685118368975));
+// console.log(repeatedString('a', 100000000));
+// console.log(repeatedString('a', 1000000000000));

@@ -493,32 +493,56 @@ function findDigits(n) {
     }
     return count;
 }
-function appendAndDelete(s, t, k) {
-    let longest = 0;
-    let diff = 0;
-    let s2t = 0;
-    s.length > t.length ? (longest = s.length) : t.length;
-    for (let i = 0; i < longest; i++) {
-        console.log(s.charAt(i));
-        console.log(t.charAt(i));
-        if (t.charAt(i) === '')
-            diff++;
-        if (s.charAt(i) !== t.charAt(i)) {
-            s2t++;
-            diff++;
-        }
+function squares(a, b) {
+    let count = 0, start = 1, max = 0;
+    while (max < b) {
+        max = start * start;
+        if (max >= a && max <= b)
+            count++;
+        start++;
     }
-    console.log('diff:', diff);
-    console.log('s2t:', s2t);
-    if (k === s2t + diff || (k >= s2t && k <= diff)) {
-        console.log('YES');
-        return 'Yes';
-    }
-    else {
-        console.log('NO');
-        return 'No';
-    }
+    return count;
 }
-appendAndDelete('hackerhappy', 'hackerrank', 9);
-appendAndDelete('aba', 'aba', 7);
-appendAndDelete('ashley', 'ash', 2);
+function libraryFine(d1, m1, y1, d2, m2, y2) {
+    let dateLate = d2 - d1, monthLate = m2 - m1, yearLate = y2 - y1, totalFine = 0;
+    let checkDate = Math.sign(dateLate), checkMonth = Math.sign(monthLate), checkYear = Math.sign(yearLate);
+    if (checkYear > 0)
+        return totalFine;
+    else if (checkYear < 0)
+        return (totalFine = 10000);
+    else if (checkMonth < 0)
+        return (totalFine = 500 * Math.abs(monthLate));
+    else if (checkMonth > 0)
+        return totalFine;
+    else if (checkDate < 0)
+        return (totalFine = 15 * Math.abs(dateLate));
+    else
+        return totalFine;
+}
+function cutTheSticks(arr) {
+    let stack = arr;
+    const beforeCut = [];
+    beforeCut.push(arr.length);
+    while (stack.length > 0) {
+        let min = Math.min(...stack);
+        for (let i in stack) {
+            stack[i] = stack[i] - min;
+        }
+        stack = stack.filter((value) => value != 0);
+        if (stack.length !== 0)
+            beforeCut.push(stack.length);
+    }
+    return beforeCut;
+}
+function repeatedString(s, n) {
+    console.time('time');
+    let count = 0;
+    let textLength = s.length;
+    let indexOfA = s.indexOf('a');
+    console.log(s);
+    console.log('textLength:', textLength);
+    console.log(indexOfA);
+    console.timeEnd('time');
+    return count;
+}
+console.log(repeatedString('aba', 10));
