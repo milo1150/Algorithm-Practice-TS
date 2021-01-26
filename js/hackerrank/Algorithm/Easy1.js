@@ -535,14 +535,19 @@ function cutTheSticks(arr) {
     return beforeCut;
 }
 function repeatedString(s, n) {
-    console.time('time');
-    let count = 0;
-    let textLength = s.length;
-    let indexOfA = s.indexOf('a');
-    console.log(s);
-    console.log('textLength:', textLength);
-    console.log(indexOfA);
-    console.timeEnd('time');
-    return count;
+    let howmanyA = 0;
+    let times = Math.floor(n / s.length);
+    let maxTimesValue = times * s.length;
+    for (let i = 0; i < s.length; i++) {
+        let char = s.charAt(i);
+        if (char === 'a')
+            howmanyA++;
+    }
+    let totalA = howmanyA * times;
+    let remain = n - maxTimesValue;
+    for (let i = 0; i < remain; i++) {
+        if (s.charAt(i) === 'a')
+            totalA++;
+    }
+    return totalA;
 }
-console.log(repeatedString('aba', 10));

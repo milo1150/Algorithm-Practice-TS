@@ -908,26 +908,30 @@ function cutTheSticks(arr: number[]): number[] {
 /**
  * Repeated String
  * https://www.hackerrank.com/challenges/repeated-string/problem
+ * 
  */
 function repeatedString(s: string, n: number): number {
-  console.time('time');
-  let count: number = 0;
-  let textLength: number = s.length;
-  let indexOfA: number = s.indexOf('a');
-  console.log(s);
-  console.log('textLength:', textLength);
-  console.log(indexOfA);
-
-  console.timeEnd('time');
-  return count;
+  // console.time('Version3.5');
+  let howmanyA: number = 0;
+  let times: number = Math.floor(n / s.length);
+  let maxTimesValue: number = times * s.length;
+  for (let i = 0; i < s.length; i++) {
+    let char: string = s.charAt(i);
+    if (char === 'a') howmanyA++;
+  }
+  let totalA: number = howmanyA * times;
+  let remain: number = n - maxTimesValue;
+  for (let i = 0; i < remain; i++) {
+    if (s.charAt(i) === 'a') totalA++;
+  }
+  // console.timeEnd('Version3.5');
+  return totalA;
 }
-console.log(repeatedString('aba', 10));
+// console.log(repeatedString('aba', 10));
 // console.log(
 //   repeatedString(
 //     'ojowrdcpavatfacuunxycyrmpbkvaxyrsgquwehhurnicgicmrpmgegftjszgvsgqavcrvdtsxlkxjpqtlnkjuyraknwxmnthfpt',
 //     685118368975
 //   )
 // );
-// console.log(repeatedString('ovsgqavcrvd', 685118368975));
-// console.log(repeatedString('a', 100000000));
 // console.log(repeatedString('a', 1000000000000));
