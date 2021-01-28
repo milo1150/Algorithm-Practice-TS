@@ -71,7 +71,6 @@ function kaprekarNumbers(p, q) {
         console.log('INVALID RANGE');
         return;
     }
-    const stack = [];
     let s = '';
     for (let i = p; i <= q; i++) {
         let numSquare = i * i;
@@ -91,4 +90,90 @@ function kaprekarNumbers(p, q) {
     else
         console.log('INVALID RANGE');
 }
-kaprekarNumbers(1, 99999);
+function taumBday(b, w, bc, wc, z) {
+    let cost = BigInt(0);
+    let defaultCase = BigInt(b * bc + w * wc);
+    if (z > wc && z > bc)
+        cost = defaultCase;
+    else if (bc > wc)
+        if (wc + z < bc)
+            cost = BigInt(b * (wc + z) + w * wc);
+        else
+            cost = defaultCase;
+    else if (wc > bc)
+        if (bc + z < wc)
+            cost = BigInt(w * (bc + z) + b * bc);
+        else
+            cost = defaultCase;
+    else
+        cost = defaultCase;
+    return cost;
+}
+function minimumDistances(a) {
+    const check = {};
+    const pair = [];
+    let minimum = 0;
+    for (let v of a) {
+        check[v] ? (check[v] += 1) : (check[v] = 1);
+        if (check[v] === 2)
+            pair.push(v);
+    }
+    if (pair.length === 0)
+        return -1;
+    else
+        for (let i of pair) {
+            const duo = [];
+            a.map((value, index) => value === i && duo.push(index));
+            const diff = Math.abs(duo[0] - duo[1]);
+            if (minimum) {
+                if (diff < minimum)
+                    minimum = diff;
+            }
+            else
+                minimum = diff;
+        }
+    return minimum;
+}
+function howManyGames(p, d, m, s) {
+    const totalAr = [];
+    let totalNum = p;
+    let next = 0;
+    if (totalNum < s)
+        totalAr.push(totalNum);
+    else
+        return 0;
+    while (totalNum < s) {
+        next = totalAr[totalAr.length - 1] - d;
+        next > m ? (next = next) : (next = m);
+        let totalValue = totalAr.reduce((a, b) => a + b);
+        if (totalValue + next <= s)
+            totalAr.push(next);
+        totalNum += next;
+    }
+    return totalAr.length;
+}
+function chocolateFeast(n, c, m) {
+    let currentChoc = Math.floor(n / c);
+    let totalChoc = currentChoc;
+    let wrapperStack = currentChoc;
+    while (currentChoc !== 0) {
+        currentChoc = Math.floor(wrapperStack / m);
+        wrapperStack = (wrapperStack % m) + currentChoc;
+        totalChoc += currentChoc;
+    }
+    return totalChoc;
+}
+function serviceLane(n, cases) {
+    const stack = [];
+    for (let i = 0; i < cases.length; i++) {
+        const startIndex = cases[i][0];
+        const lastIndex = cases[i][1];
+        let min = n[startIndex];
+        for (let j = startIndex; j < lastIndex; j++) {
+            if (n[j + 1] < min)
+                min = n[j + 1];
+        }
+        stack.push(min);
+    }
+    return stack;
+}
