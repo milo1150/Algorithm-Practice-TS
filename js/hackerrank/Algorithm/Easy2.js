@@ -177,3 +177,116 @@ function serviceLane(n, cases) {
     }
     return stack;
 }
+function flatlandSpaceStations(n, c) {
+    const freeCity = [];
+    for (let i = 0; i < n; i++) {
+        if (c.indexOf(i) === -1)
+            freeCity.push(i);
+    }
+    if (freeCity.length === 0)
+        return 0;
+    const distance = [];
+    for (let v of freeCity) {
+        let minDistance = 0;
+        for (let k of c) {
+            let sum = Math.abs(v - k);
+            if (!minDistance)
+                minDistance = sum;
+            else if (sum < minDistance)
+                minDistance = sum;
+        }
+        distance.push(minDistance);
+    }
+    let max = Math.max(...distance);
+    return max;
+}
+function workbook(n, k, arr) {
+    const workbook = {};
+    for (let i = 1; i <= n; i++) {
+        if (!workbook[i])
+            workbook[`Chapter${i}`] = {};
+    }
+    let currentIndex = 0;
+    let chapterX = 1;
+    for (let prob of arr) {
+        let pMain = 0;
+        let pRemain = 0;
+        if (k >= prob)
+            (pMain = 1), (pRemain = 0);
+        else {
+            pMain = Math.floor(prob / k);
+            if (prob % k === 0)
+                pRemain = 0;
+            else
+                pRemain = 1;
+        }
+        let newIndex = currentIndex + pMain + pRemain;
+        if (workbook[`Chapter${chapterX}`]) {
+            for (let i = currentIndex + 1; i <= newIndex; i++) {
+                workbook[`Chapter${chapterX}`][i] = [];
+            }
+        }
+        currentIndex = newIndex;
+        chapterX++;
+    }
+    let specialProb = 0;
+    for (let i = 0; i < arr.length; i++) {
+        let start = 1;
+        const end = arr[i];
+        const wbChapter = workbook[`Chapter${i + 1}`];
+        const keys = Object.keys(wbChapter);
+        for (let i = start, keyIndex = 0; i <= end; i++) {
+            wbChapter[keys[keyIndex]].push(i);
+            if (i.toString() === keys[keyIndex])
+                specialProb++;
+            if (i % k === 0)
+                keyIndex++;
+        }
+    }
+    return specialProb;
+}
+function cavityMap(grid) {
+    console.table(grid);
+    console.log(typeof grid);
+    let gridCopy = grid.toString();
+    console.log(typeof gridCopy);
+    if (grid.length < 3 || grid[0].length + grid[1].length + grid[2].length < 9)
+        return grid;
+    console.log('----------------- grid pass --------------------');
+    for (let i = 1; i <= gridCopy.length - 2; i++) {
+        let rowBefore = gridCopy[i - 1];
+        let row = gridCopy[i];
+        let rowAfter = gridCopy[i + 1];
+        for (let j = 1; j <= row.length - 2; j++) {
+            let cell = parseInt(row[j]);
+            let cellR = parseInt(row[j + 1]);
+            let cellL = parseInt(row[j - 1]);
+            let cellT = parseInt(rowBefore[j]);
+            let cellB = parseInt(rowAfter[j]);
+            const cellArr = [cell, cellT, cellR, cellB, cellL];
+            let countMax = 0;
+            for (let k = 1; k < cellArr.length; k++) {
+                if (cellArr[k] >= cell)
+                    countMax++;
+            }
+            console.log(row);
+            console.log(cellArr);
+            if (countMax === 0) {
+                let newRow = row.split('');
+                newRow[j] = 'X';
+                newRow = newRow.join('');
+            }
+            console.log('updategrid:', gridCopy);
+        }
+    }
+    return grid;
+}
+cavityMap([
+    '2476387',
+    '1485738',
+    '6591334',
+    '9589583',
+    '6827769',
+    '2559498',
+    '1822388',
+]);

@@ -162,7 +162,6 @@ function taumBday(
     if (bc + z < wc) cost = BigInt(w * (bc + z) + b * bc);
     else cost = defaultCase;
   else cost = defaultCase;
-  //   console.log(cost);
   return cost;
 }
 // case 12
@@ -285,3 +284,183 @@ function serviceLane(n: width, cases: cases) {
 //     ws.write(result.join("\n") + "\n")
 //     ws.end()
 // }
+
+/**
+ * Flatland Space Stations
+ * https://www.hackerrank.com/challenges/flatland-space-stations/problem
+ */
+function flatlandSpaceStations(n: number, c: number[]): number {
+  const freeCity: number[] = [];
+  for (let i = 0; i < n; i++) {
+    if (c.indexOf(i) === -1) freeCity.push(i);
+  }
+  if (freeCity.length === 0) return 0;
+  const distance: number[] = [];
+  for (let v of freeCity) {
+    let minDistance: number = 0;
+    for (let k of c) {
+      let sum: number = Math.abs(v - k);
+      if (!minDistance) minDistance = sum;
+      else if (sum < minDistance) minDistance = sum;
+    }
+    distance.push(minDistance);
+  }
+  let max: number = Math.max(...distance);
+  return max;
+}
+// flatlandSpaceStations(5, [0, 4]);
+
+/**
+ * Lisa's Workbook
+ * https://www.hackerrank.com/challenges/lisa-workbook/problem
+ * V.1 : maybe for front end data.so can use in algorithm but it very very very slow.
+ * V.2 : for algorithm but it incomplete. 6/11 test case failed :(
+ */
+interface workbook {
+  [index: string]: {
+    [index: number]: number[];
+  };
+}
+interface wbChapter {
+  [index: string]: number[];
+}
+function workbook(n: number, k: number, arr: number[]): number {
+  const workbook: workbook = {};
+  // set workbook chapter
+  for (let i = 1; i <= n; i++) {
+    if (!workbook[i]) workbook[`Chapter${i}`] = {};
+  }
+  // console.log(workbook);
+  /*   set index */
+  let currentIndex: number = 0;
+  let chapterX: number = 1;
+  for (let prob of arr) {
+    let pMain: number = 0;
+    let pRemain: number = 0;
+    if (k >= prob) (pMain = 1), (pRemain = 0);
+    else {
+      pMain = Math.floor(prob / k);
+      if (prob % k === 0) pRemain = 0;
+      else pRemain = 1;
+    }
+    let newIndex: number = currentIndex + pMain + pRemain;
+    // console.log('lastIndex:', currentIndex);
+    if (workbook[`Chapter${chapterX}`]) {
+      for (let i = currentIndex + 1; i <= newIndex; i++) {
+        workbook[`Chapter${chapterX}`][i] = [];
+      }
+    }
+    currentIndex = newIndex;
+    chapterX++;
+  }
+  // console.log(workbook);
+  /*   put value and check */
+  let specialProb: number = 0;
+  for (let i = 0; i < arr.length; i++) {
+    let start: number = 1;
+    const end: number = arr[i];
+    const wbChapter: wbChapter = workbook[`Chapter${i + 1}`];
+    const keys: string[] = Object.keys(wbChapter);
+    for (let i = start, keyIndex = 0; i <= end; i++) {
+      wbChapter[keys[keyIndex]].push(i);
+      if (i.toString() === keys[keyIndex]) specialProb++;
+      if (i % k === 0) keyIndex++;
+    }
+  }
+  // console.log(workbook);
+  return specialProb;
+
+  /**
+   * V.2 6/11 test case failed
+   */
+  // let page: number = 1;
+  // let special: number = 0;
+  // for (let i = 1; i <= n; i++) {
+  //   let last: number = 0;
+  //   for (let j = 1; j <= arr[i - 1]; j++) {
+  //     if (j % k === 0) {
+  //       page++;
+  //     }
+  //     if (j === page - 1) special++; // OR
+  //     if (j === page) special++;
+  //     last = j;
+  //   }
+  //   if (last % k !== 0) page++;
+  // }
+  // // console.log(special);
+  // return special;
+}
+// workbook(5, 3, [4, 2, 6, 1, 10]);
+// workbook(10, 5, [3, 8, 15, 11, 14, 1, 9, 2, 24, 31]);
+// workbook(1, 1, [100]);
+
+/**
+ * Cavity Map
+ * https://www.hackerrank.com/challenges/cavity-map/problem
+ */
+type cell = string | number;
+type row = string | string[];
+function cavityMap(grid: string[]) {
+  console.table(grid);
+  console.log(typeof grid);
+  let gridCopy: string = grid.toString();
+  console.log(typeof gridCopy);
+  if (grid.length < 3 || grid[0].length + grid[1].length + grid[2].length < 9)
+    return grid;
+  console.log('----------------- grid pass --------------------');
+  for (let i = 1; i <= gridCopy.length - 2; i++) {
+    let rowBefore: row = gridCopy[i - 1];
+    let row: row = gridCopy[i];
+    let rowAfter: row = gridCopy[i + 1];
+    // console.log(rowBefore, row, rowAfter);
+    // console.log(row);
+    for (let j = 1; j <= row.length - 2; j++) {
+      let cell: cell = parseInt(row[j]);
+      let cellR: cell = parseInt(row[j + 1]);
+      let cellL: cell = parseInt(row[j - 1]);
+      let cellT: cell = parseInt(rowBefore[j]);
+      let cellB: cell = parseInt(rowAfter[j]);
+      const cellArr: cell[] = [cell, cellT, cellR, cellB, cellL];
+      let countMax: number = 0;
+      for (let k = 1; k < cellArr.length; k++) {
+        if (cellArr[k] >= cell) countMax++;
+      }
+      console.log(row);
+      console.log(cellArr);
+      // console.log(countMax);
+      if (countMax === 0) {
+        // console.log(grid[i]);
+        // console.log(grid[i][j]);
+        let newRow: row = row.split('');
+        newRow[j] = 'X';
+        newRow = newRow.join('');
+        // gridCopy[i] = newRow;
+      }
+      console.log('updategrid:', gridCopy);
+    }
+  }
+  // console.log(gridCopy);
+  // console.log(grid);
+  return grid;
+}
+// cavityMap(['1112', '1912', '1892', '1234']);
+// cavityMap([
+//   '179443854',
+//   '961621369',
+//   '164139922',
+//   '968633951',
+//   '812882578',
+//   '257829163',
+//   '812438597',
+//   '176656233',
+//   '485773814',
+// ]);
+cavityMap([
+  '2476387',
+  '1485738',
+  '6591334',
+  '9589583',
+  '6827769',
+  '2559498',
+  '1822388',
+]);
