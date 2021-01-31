@@ -246,17 +246,14 @@ function workbook(n, k, arr) {
     return specialProb;
 }
 function cavityMap(grid) {
-    console.table(grid);
-    console.log(typeof grid);
-    let gridCopy = grid.toString();
-    console.log(typeof gridCopy);
+    let gridC = grid;
     if (grid.length < 3 || grid[0].length + grid[1].length + grid[2].length < 9)
         return grid;
-    console.log('----------------- grid pass --------------------');
-    for (let i = 1; i <= gridCopy.length - 2; i++) {
-        let rowBefore = gridCopy[i - 1];
-        let row = gridCopy[i];
-        let rowAfter = gridCopy[i + 1];
+    const cellCount = {};
+    for (let i = 1; i <= gridC.length - 2; i++) {
+        let rowBefore = gridC[i - 1];
+        let row = gridC[i];
+        let rowAfter = gridC[i + 1];
         for (let j = 1; j <= row.length - 2; j++) {
             let cell = parseInt(row[j]);
             let cellR = parseInt(row[j + 1]);
@@ -269,24 +266,181 @@ function cavityMap(grid) {
                 if (cellArr[k] >= cell)
                     countMax++;
             }
-            console.log(row);
-            console.log(cellArr);
             if (countMax === 0) {
-                let newRow = row.split('');
-                newRow[j] = 'X';
-                newRow = newRow.join('');
+                if (!cellCount[i]) {
+                    cellCount[i] = [];
+                    cellCount[i].push(j);
+                }
+                else
+                    cellCount[i].push(j);
             }
-            console.log('updategrid:', gridCopy);
         }
+    }
+    for (let i of Object.entries(cellCount)) {
+        let rowStr = grid[parseInt(i[0])].split('');
+        const posArr = i[1];
+        for (let j = 0; j < posArr.length; j++) {
+            rowStr[posArr[j]] = 'X';
+        }
+        rowStr = rowStr.join('');
+        grid[parseInt(i[0])] = rowStr;
     }
     return grid;
 }
-cavityMap([
-    '2476387',
-    '1485738',
-    '6591334',
-    '9589583',
-    '6827769',
-    '2559498',
-    '1822388',
+function fairRations(B) {
+    let inf = 0;
+    let count = 0;
+    while (true) {
+        for (let i = 0; i < B.length; i++) {
+            if (B[i] % 2 !== 0) {
+                B[i] = B[i] + 1;
+                B[i + 1] = B[i + 1] + 1;
+                count += 2;
+                break;
+            }
+        }
+        let mod = 0;
+        for (let i of B)
+            if (i % 2 === 0)
+                mod++;
+        if (mod === B.length)
+            break;
+        inf++;
+        if (inf > 2 * B.length) {
+            count = 'NO';
+            break;
+        }
+    }
+    return count;
+}
+function happyLadybugs(b) {
+    let str = b.split('');
+    let strSort = str.sort();
+    let status = 'YES';
+    let space = 0;
+    let almostSort = false;
+    const obj = {};
+    for (let i = 0; i < str.length; i++) {
+        if (str[i] === '_')
+            space++;
+        if (!obj[str[i]] && str[i] !== '_')
+            obj[str[i]] = 1;
+        else if (str[i] !== '_')
+            obj[str[i]]++;
+    }
+    if (space === 0 && strSort.join('').localeCompare(b) === -1) {
+        status = 'YES';
+        almostSort = true;
+    }
+    if (space === str.length)
+        status = 'YES';
+    for (let v of Object.entries(obj))
+        if (v[1] < 2)
+            return (status = 'NO');
+    if (almostSort) {
+        for (let j = 0; j < b.split('').length; j++) {
+            let strArr = b.split('');
+            if (j % 2 === 0 || j === 0) {
+                if (strArr[j + 1] !== strArr[j]) {
+                    console.log('case 4');
+                    status = 'NO';
+                }
+            }
+        }
+    }
+    return status;
+}
+function introTutorial(v, arr) {
+    let index = 0;
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] === v)
+            index = i;
+    }
+    return index;
+}
+introTutorial(4, [1, 4, 5, 7, 9, 12]);
+function superReducedString(s) {
+    let str = s;
+    let loop = true;
+    let i = 0;
+    let error = 0;
+    while (loop) {
+        if (str.charAt(i) === str.charAt(i + 1)) {
+            error++;
+            if (i === 0)
+                str = str.substring(2, str.length);
+            else {
+                let s1 = str.substring(0, i);
+                let s2 = str.substring(i + 2, str.length);
+                str = s1.concat(s2);
+            }
+        }
+        else
+            i++;
+        if (!str) {
+            str = 'Empty String';
+            break;
+        }
+        if (i === str.length) {
+            if (error === 0)
+                loop = false;
+            else
+                (i = 0), (error = 0);
+        }
+    }
+    return str;
+}
+function bigSorting(unsorted) {
+    const arr = [];
+    const returnArr = [];
+    let arrBigInt = [];
+    for (let i of unsorted) {
+        let a = BigInt(i);
+        if (a < Number.MAX_SAFE_INTEGER) {
+            arr.push(parseInt(a));
+        }
+    }
+    arr.sort((a, b) => a - b);
+    for (let i of arr) {
+        returnArr.push(i.toString());
+    }
+    arrBigInt = unsorted.filter((value) => BigInt(value) > Number.MAX_SAFE_INTEGER);
+    let loopBigInt = true;
+    let i = 0;
+    let error = 0;
+    while (loopBigInt) {
+        if (arrBigInt.length === 1) {
+            break;
+        }
+        let a = BigInt(arrBigInt[i]);
+        let b = BigInt(arrBigInt[i + 1]);
+        console.log(a, b);
+        if (b < a) {
+            error++;
+            [arrBigInt[i], arrBigInt[i + 1]] = [arrBigInt[i + 1], arrBigInt[i]];
+        }
+        i++;
+        if (i === arrBigInt.length - 1) {
+            if (error === 0)
+                break;
+            else
+                (i = 0), (error = 0);
+        }
+    }
+    for (let i of arrBigInt) {
+        returnArr.push(i);
+    }
+    console.log(returnArr);
+    return returnArr;
+}
+bigSorting([
+    '8',
+    '1',
+    '2',
+    '100',
+    '12303479849857341718340192371',
+    '3084193741082937',
+    '3084193741082938',
+    '111',
+    '200',
 ]);

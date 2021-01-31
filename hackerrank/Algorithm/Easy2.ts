@@ -397,23 +397,22 @@ function workbook(n: number, k: number, arr: number[]): number {
 /**
  * Cavity Map
  * https://www.hackerrank.com/challenges/cavity-map/problem
+ * can't copy grid to edit and paste. need to change all x in one row in same time
  */
 type cell = string | number;
 type row = string | string[];
-function cavityMap(grid: string[]) {
-  console.table(grid);
-  console.log(typeof grid);
-  let gridCopy: string = grid.toString();
-  console.log(typeof gridCopy);
+interface cellCount {
+  [index: string]: number[];
+}
+function cavityMap(grid: string[]): string[] {
+  let gridC = grid;
   if (grid.length < 3 || grid[0].length + grid[1].length + grid[2].length < 9)
     return grid;
-  console.log('----------------- grid pass --------------------');
-  for (let i = 1; i <= gridCopy.length - 2; i++) {
-    let rowBefore: row = gridCopy[i - 1];
-    let row: row = gridCopy[i];
-    let rowAfter: row = gridCopy[i + 1];
-    // console.log(rowBefore, row, rowAfter);
-    // console.log(row);
+  const cellCount: cellCount = {};
+  for (let i = 1; i <= gridC.length - 2; i++) {
+    let rowBefore: row = gridC[i - 1];
+    let row: row = gridC[i];
+    let rowAfter: row = gridC[i + 1];
     for (let j = 1; j <= row.length - 2; j++) {
       let cell: cell = parseInt(row[j]);
       let cellR: cell = parseInt(row[j + 1]);
@@ -425,42 +424,248 @@ function cavityMap(grid: string[]) {
       for (let k = 1; k < cellArr.length; k++) {
         if (cellArr[k] >= cell) countMax++;
       }
-      console.log(row);
-      console.log(cellArr);
-      // console.log(countMax);
       if (countMax === 0) {
-        // console.log(grid[i]);
-        // console.log(grid[i][j]);
-        let newRow: row = row.split('');
-        newRow[j] = 'X';
-        newRow = newRow.join('');
-        // gridCopy[i] = newRow;
+        if (!cellCount[i]) {
+          cellCount[i] = [];
+          cellCount[i].push(j);
+        } else cellCount[i].push(j);
       }
-      console.log('updategrid:', gridCopy);
     }
   }
-  // console.log(gridCopy);
-  // console.log(grid);
+  for (let i of Object.entries(cellCount)) {
+    let rowStr: row = grid[parseInt(i[0])].split('');
+    const posArr: number[] = i[1];
+    for (let j = 0; j < posArr.length; j++) {
+      rowStr[posArr[j]] = 'X';
+    }
+    rowStr = rowStr.join('');
+    grid[parseInt(i[0])] = rowStr;
+  }
   return grid;
 }
 // cavityMap(['1112', '1912', '1892', '1234']);
 // cavityMap([
-//   '179443854',
-//   '961621369',
-//   '164139922',
-//   '968633951',
-//   '812882578',
-//   '257829163',
-//   '812438597',
-//   '176656233',
-//   '485773814',
+//   '2476387',
+//   '1485738',
+//   '6591334',
+//   '9589583',
+//   '6827769',
+//   '2559498',
+//   '1822388',
 // ]);
-cavityMap([
-  '2476387',
-  '1485738',
-  '6591334',
-  '9589583',
-  '6827769',
-  '2559498',
-  '1822388',
+
+/**
+ * Fair Rations
+ * https://www.hackerrank.com/challenges/fair-rations/problem
+ */
+function fairRations(B: number[]): number | string {
+  let inf: number = 0;
+  let count: number | string = 0;
+  while (true) {
+    for (let i = 0; i < B.length; i++) {
+      if (B[i] % 2 !== 0) {
+        B[i] = B[i] + 1;
+        B[i + 1] = B[i + 1] + 1;
+        count += 2;
+        break;
+      }
+    }
+    let mod: number = 0;
+    for (let i of B) if (i % 2 === 0) mod++;
+    if (mod === B.length) break;
+    inf++;
+    if (inf > 2 * B.length) {
+      count = 'NO';
+      break;
+    }
+  }
+  return count;
+}
+// fairRations([2, 3, 4, 5, 6]);
+// fairRations([4, 5, 6, 7]);
+// fairRations([1, 2]);
+
+/**
+ * Happy Ladybugs
+ * https://www.hackerrank.com/challenges/happy-ladybugs/problem
+ * Broken algorithm 1/12 test cases failed
+ */
+type ladybugs = 'YES' | 'NO';
+interface ladybugsObj {
+  [index: string]: number;
+}
+function happyLadybugs(b: string): any {
+  let str: string | string[] = b.split('');
+  let strSort: string | string[] = str.sort();
+  let status: ladybugs = 'YES';
+  let space: number = 0;
+  let almostSort: boolean = false;
+  const obj: ladybugsObj = {};
+  for (let i = 0; i < str.length; i++) {
+    if (str[i] === '_') space++;
+    if (!obj[str[i]] && str[i] !== '_') obj[str[i]] = 1;
+    else if (str[i] !== '_') obj[str[i]]++;
+  }
+  if (space === 0 && strSort.join('').localeCompare(b) === -1) {
+    status = 'YES';
+    almostSort = true;
+  }
+  if (space === str.length) status = 'YES';
+  for (let v of Object.entries(obj)) if (v[1] < 2) return (status = 'NO');
+  if (almostSort) {
+    for (let j = 0; j < b.split('').length; j++) {
+      let strArr = b.split('');
+      if (j % 2 === 0 || j === 0) {
+        if (strArr[j + 1] !== strArr[j]) {
+          console.log('case 4');
+          status = 'NO';
+        }
+      }
+    }
+  }
+  return status;
+}
+// happyLadybugs('G');
+// happyLadybugs('GR');
+// happyLadybugs('_GR_');
+// happyLadybugs('_R_G_');
+// happyLadybugs('R_R_R');
+// happyLadybugs('RRGGBBXX'); //YES
+// happyLadybugs('RRGGBBXY'); //NO
+// happyLadybugs('IIIAA'); //YES
+
+/**
+ * Intro to Tutorial Challenges
+ * https://www.hackerrank.com/challenges/tutorial-intro/problem
+ * Broken question
+ */
+function introTutorial(v: number, arr: number[]): number {
+  let index: number = 0;
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] === v) index = i;
+  }
+  return index;
+}
+introTutorial(4, [1, 4, 5, 7, 9, 12]);
+
+/**
+ * Super Reduce String
+ * https://www.hackerrank.com/challenges/reduced-string/problem
+ * do not sort string before check
+ */
+function superReducedString(s: string): string {
+  let str: string = s;
+  let loop: boolean = true;
+  let i: number = 0;
+  let error: number = 0;
+  while (loop) {
+    if (str.charAt(i) === str.charAt(i + 1)) {
+      error++;
+      if (i === 0) str = str.substring(2, str.length);
+      else {
+        let s1: string = str.substring(0, i);
+        let s2: string = str.substring(i + 2, str.length);
+        str = s1.concat(s2);
+      }
+    } else i++;
+    if (!str) {
+      str = 'Empty String';
+      break;
+    }
+    if (i === str.length) {
+      if (error === 0) loop = false;
+      else (i = 0), (error = 0);
+    }
+  }
+  // console.log(str);
+  // console.log('\n');
+  return str;
+}
+// superReducedString('aaabccddd');
+// superReducedString('baab');
+// superReducedString(
+//   'zztqooauhujtmxnsbzpykwlvpfyqijvdhuhiroodmuxiobyvwwxupqwydkpeebxmfvxhgicuzdealkgxlfmjiucasokrdznmtlwh'
+// );
+// superReducedString(
+//   'lrfkqyuqfjjfquyqkfrlkxyqvnrtyssytrnvqyxkfrzrmzlygffgylzmrzrfveulqfpdbhhbdpfqluevlqdqrrcrwddwrcrrqdql'
+// );
+
+/**
+ * Big Sorting
+ * https://www.hackerrank.com/challenges/big-sorting/problem
+ */
+function bigSorting(unsorted: string[]): string[] {
+  // console.log(unsorted);
+  const arr: number[] = [];
+  const returnArr: string[] = [];
+  let arrBigInt: string[] = [];
+  for (let i of unsorted) {
+    let a: any = BigInt(i);
+    if (a < Number.MAX_SAFE_INTEGER) {
+      arr.push(parseInt(a));
+    }
+  }
+  arr.sort((a, b) => a - b);
+  // console.log(arr);
+  for (let i of arr) {
+    returnArr.push(i.toString());
+  }
+  // console.log(returnArr);
+
+  /* BIG INT */
+  arrBigInt = unsorted.filter(
+    (value) => BigInt(value) > Number.MAX_SAFE_INTEGER
+  );
+  // console.log(arrBigInt);
+  let loopBigInt: boolean = true;
+  let i: number = 0;
+  let error: number = 0;
+  while (loopBigInt) {
+    if(arrBigInt.length === 1){
+      break;
+    }
+    let a: any = BigInt(arrBigInt[i]);
+    let b: any = BigInt(arrBigInt[i + 1]);
+    console.log(a, b);
+    if (b < a) {
+      error++;
+      [arrBigInt[i], arrBigInt[i + 1]] = [arrBigInt[i + 1], arrBigInt[i]];
+    }
+    i++;
+    if (i === arrBigInt.length - 1) {
+      if (error === 0) break;
+      else (i = 0), (error = 0);
+    }
+  }
+  // console.log(arrBigInt);
+
+  for (let i of arrBigInt) {
+    returnArr.push(i);
+  }
+  console.log(returnArr);
+  return returnArr;
+}
+// bigSorting([
+//   '991415926535897932384626433832795',
+//   '21415926535897932384626433832795',
+//   '31415926535897932384626433832795',
+//   '11415926535897932384626433832795',
+//   '500',
+//   '151213513',
+//   '1',
+//   '3',
+//   '10',
+//   '3',
+//   '5',
+// ]);
+bigSorting([
+  '8',
+  '1',
+  '2',
+  '100',
+  '12303479849857341718340192371',
+  '3084193741082937',
+  '3084193741082938',
+  '111',
+  '200',
 ]);
