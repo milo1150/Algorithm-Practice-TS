@@ -593,6 +593,7 @@ function superReducedString(s: string): string {
 /**
  * Big Sorting
  * https://www.hackerrank.com/challenges/big-sorting/problem
+ * Terminated due to timeout :( + 1 errors
  */
 function bigSorting(unsorted: string[]): string[] {
   // console.log(unsorted);
@@ -621,12 +622,11 @@ function bigSorting(unsorted: string[]): string[] {
   let i: number = 0;
   let error: number = 0;
   while (loopBigInt) {
-    if(arrBigInt.length === 1){
+    if (arrBigInt.length === 1) {
       break;
     }
     let a: any = BigInt(arrBigInt[i]);
     let b: any = BigInt(arrBigInt[i + 1]);
-    console.log(a, b);
     if (b < a) {
       error++;
       [arrBigInt[i], arrBigInt[i + 1]] = [arrBigInt[i + 1], arrBigInt[i]];
@@ -638,11 +638,10 @@ function bigSorting(unsorted: string[]): string[] {
     }
   }
   // console.log(arrBigInt);
-
   for (let i of arrBigInt) {
     returnArr.push(i);
   }
-  console.log(returnArr);
+  // console.log(returnArr);
   return returnArr;
 }
 // bigSorting([
@@ -658,14 +657,201 @@ function bigSorting(unsorted: string[]): string[] {
 //   '3',
 //   '5',
 // ]);
-bigSorting([
-  '8',
-  '1',
-  '2',
-  '100',
-  '12303479849857341718340192371',
-  '3084193741082937',
-  '3084193741082938',
-  '111',
-  '200',
+
+/**
+ * CamelCase
+ * https://www.hackerrank.com/challenges/camelcase/problem
+ */
+function camelcase(s: string): number {
+  let count: number = 0;
+  for (let i of s) {
+    if (i === i.toUpperCase()) count++;
+  }
+  return count + 1;
+}
+// camelcase('saveChangesInTheEditor');
+
+/**
+ * Insertion Sort Part 2
+ * https://www.hackerrank.com/challenges/insertionsort2/problem
+ */
+function insertionSort2(n: number, arr: number[]): void {
+  for (let i = 1; i < arr.length; i++) {
+    let minIndex: number = 0;
+    for (let j = i - 1; j >= 0; j--) {
+      let insertNum: number = arr[i];
+      if (arr[i] > arr[j]) {
+        minIndex = j;
+        arr.splice(i, 1);
+        arr.splice(minIndex + 1, 0, insertNum);
+        break;
+      } else if (j === 0) {
+        if (arr[i] < arr[j]) {
+          arr.splice(i, 1);
+          arr.splice(0, 0, insertNum);
+          break;
+        }
+      }
+    }
+    let str: string = '';
+    for (let i of arr) {
+      str += i + ' ';
+    }
+    console.log(str);
+  }
+}
+// insertionSort2(6, [1, 4, 3, 5, 6, 2]);
+// insertionSort2(7, [3, 4, 7, 5, 6, 2, 1]);
+// insertionSort2(6, [2, 4, 6, 7, 3, 8]);
+
+/**
+ * Insertion Sort Part 1
+ * https://www.hackerrank.com/challenges/insertionsort1/problem
+ * unreadable....
+ */
+function insertionSort1(n: number, arr: number[]): void {
+  const rightMost: number = arr[arr.length - 1];
+  let minIndex: number = 0;
+  let atZero: boolean = false;
+  for (let i = arr.length - 1; i >= 0; i--) {
+    if (arr[i] < rightMost) {
+      minIndex = i;
+      break;
+    } else if (i === 0 && arr[i] > rightMost) {
+      atZero = true;
+    }
+  }
+
+  for (let i = arr.length - 1; i >= 0; i--) {
+    if (i === arr.length - 1) {
+      arr[arr.length - 1] = arr[arr.length - 2];
+      console.log(...arr);
+    } else {
+      if (i === minIndex + 1) {
+        arr[i] = rightMost;
+        if (atZero) {
+          for (let j = 2; j > 0; j--) {
+            if (j === 1) {
+              arr[0] = rightMost;
+              console.log(...arr);
+              break;
+            }
+            arr[i] = arr[i - 1];
+            console.log(...arr);
+          }
+          break;
+        }
+        console.log(...arr);
+        break;
+      } else {
+        arr[i] = arr[i - 1];
+        console.log(...arr);
+      }
+    }
+  }
+}
+// insertionSort1(5, [1, 2, 4, 5, 3]);
+// insertionSort1(5, [2, 4, 6, 8, 3]);
+// insertionSort1(10, [2, 3, 4, 5, 6, 7, 8, 9, 10, 1]);
+
+/**
+ * Quicksort 1 - Partition
+ * https://www.hackerrank.com/challenges/quicksort1/problem
+ */
+function quicksort(arr: number[]): any {
+  const pivot: number[] = [arr[0]];
+  const left: number[] = [];
+  const right: number[] = [];
+  for (let i of arr) {
+    if (i > arr[0]) right.push(i);
+    else if (i < arr[0]) left.push(i);
+  }
+  return left.concat(pivot).concat(right);
+}
+// quicksort([4, 5, 3, 7, 2]);
+
+/**
+ * Mars Exploration
+ * https://www.hackerrank.com/challenges/mars-exploration/problem
+ */
+function marsExplorations(s: string): number {
+  let sos: string = '';
+  const times: number = s.length / 3;
+  let error: number = 0;
+  for (let i = 0; i < times; i++) sos += 'SOS';
+  for (let i = 0; i <= s.length; i++) {
+    if (s.charAt(i) !== sos.charAt(i)) error++;
+  }
+  return error;
+}
+// marsExplorations('SOSSPSSQSSOR');
+// marsExplorations('SOSSOT');
+// marsExplorations('SOSSOSSOS');
+
+/**
+ * Running Time of Algorithms
+ * https://www.hackerrank.com/challenges/runningtime/problem
+ */
+function runningTime(arr: number[]): number {
+  // console.log(arr);
+  let count: number = 0;
+  for (let i = 1; i < arr.length; i++) {
+    // console.log('current check:', arr[i]);
+    const beforeIndex: number = i - 1;
+    if (beforeIndex === 0) {
+      if (arr[0] === arr[i]) break;
+      else if (arr[0] > arr[i]) {
+        [arr[0], arr[i]] = [arr[i], arr[0]];
+        count++;
+      }
+    } else {
+      for (let j = beforeIndex; j > 0; j--) {
+        // console.log(arr[j]);
+        // console.log('arr[j-1]:', arr[j - 1]);
+        if (arr[i] < arr[j] && arr[i] >= arr[j - 1]) {
+          let value: number = arr[i];
+          // console.log('stop');
+          // console.log(arr);
+          arr.splice(i, 1);
+          arr.splice(j - 1, 0, value);
+          // console.log(arr);
+          // break;
+        } else if (arr[i] < arr[j] && arr[i] < arr[j - 1]) {
+          // console.log('last:', arr[j - 1]);
+          let value: number = arr[i];
+          arr.splice(i, 1);
+          arr.splice(0, 0, value);
+          // console.log(arr);
+          // count++;
+        }
+      }
+      count++;
+    }
+  }
+  console.log(arr);
+  console.log('count:', count);
+  return count;
+}
+// runningTime([2, 1, 3, 1, 2]);
+// runningTime([1, 1, 2, 2, 3, 3, 5, 5, 7, 7, 9, 9]);
+// runningTime([10, 9, 8, 7, 6, 5, 4, 3, 2, 1]);
+runningTime([
+  4,
+  124,
+  513,
+  2,
+  35,
+  64,
+  768,
+  2,
+  64,
+  0,
+  14,
+  2,
+  5,
+  78,
+  43,
+  78,
+  9,
+  99,
 ]);

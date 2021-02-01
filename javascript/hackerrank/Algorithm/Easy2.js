@@ -414,7 +414,6 @@ function bigSorting(unsorted) {
         }
         let a = BigInt(arrBigInt[i]);
         let b = BigInt(arrBigInt[i + 1]);
-        console.log(a, b);
         if (b < a) {
             error++;
             [arrBigInt[i], arrBigInt[i + 1]] = [arrBigInt[i + 1], arrBigInt[i]];
@@ -430,17 +429,158 @@ function bigSorting(unsorted) {
     for (let i of arrBigInt) {
         returnArr.push(i);
     }
-    console.log(returnArr);
     return returnArr;
 }
-bigSorting([
-    '8',
-    '1',
-    '2',
-    '100',
-    '12303479849857341718340192371',
-    '3084193741082937',
-    '3084193741082938',
-    '111',
-    '200',
+function camelcase(s) {
+    let count = 0;
+    for (let i of s) {
+        if (i === i.toUpperCase())
+            count++;
+    }
+    return count + 1;
+}
+function insertionSort2(n, arr) {
+    for (let i = 1; i < arr.length; i++) {
+        let minIndex = 0;
+        for (let j = i - 1; j >= 0; j--) {
+            let insertNum = arr[i];
+            if (arr[i] > arr[j]) {
+                minIndex = j;
+                arr.splice(i, 1);
+                arr.splice(minIndex + 1, 0, insertNum);
+                break;
+            }
+            else if (j === 0) {
+                if (arr[i] < arr[j]) {
+                    arr.splice(i, 1);
+                    arr.splice(0, 0, insertNum);
+                    break;
+                }
+            }
+        }
+        let str = '';
+        for (let i of arr) {
+            str += i + ' ';
+        }
+        console.log(str);
+    }
+}
+function insertionSort1(n, arr) {
+    const rightMost = arr[arr.length - 1];
+    let minIndex = 0;
+    let atZero = false;
+    for (let i = arr.length - 1; i >= 0; i--) {
+        if (arr[i] < rightMost) {
+            minIndex = i;
+            break;
+        }
+        else if (i === 0 && arr[i] > rightMost) {
+            atZero = true;
+        }
+    }
+    for (let i = arr.length - 1; i >= 0; i--) {
+        if (i === arr.length - 1) {
+            arr[arr.length - 1] = arr[arr.length - 2];
+            console.log(...arr);
+        }
+        else {
+            if (i === minIndex + 1) {
+                arr[i] = rightMost;
+                if (atZero) {
+                    for (let j = 2; j > 0; j--) {
+                        if (j === 1) {
+                            arr[0] = rightMost;
+                            console.log(...arr);
+                            break;
+                        }
+                        arr[i] = arr[i - 1];
+                        console.log(...arr);
+                    }
+                    break;
+                }
+                console.log(...arr);
+                break;
+            }
+            else {
+                arr[i] = arr[i - 1];
+                console.log(...arr);
+            }
+        }
+    }
+}
+function quicksort(arr) {
+    const pivot = [arr[0]];
+    const left = [];
+    const right = [];
+    for (let i of arr) {
+        if (i > arr[0])
+            right.push(i);
+        else if (i < arr[0])
+            left.push(i);
+    }
+    return left.concat(pivot).concat(right);
+}
+function marsExplorations(s) {
+    let sos = '';
+    const times = s.length / 3;
+    let error = 0;
+    for (let i = 0; i < times; i++)
+        sos += 'SOS';
+    for (let i = 0; i <= s.length; i++) {
+        if (s.charAt(i) !== sos.charAt(i))
+            error++;
+    }
+    return error;
+}
+function runningTime(arr) {
+    let count = 0;
+    for (let i = 1; i < arr.length; i++) {
+        const beforeIndex = i - 1;
+        if (beforeIndex === 0) {
+            if (arr[0] === arr[i])
+                break;
+            else if (arr[0] > arr[i]) {
+                [arr[0], arr[i]] = [arr[i], arr[0]];
+                count++;
+            }
+        }
+        else {
+            for (let j = beforeIndex; j > 0; j--) {
+                if (arr[i] < arr[j] && arr[i] >= arr[j - 1]) {
+                    let value = arr[i];
+                    arr.splice(i, 1);
+                    arr.splice(j - 1, 0, value);
+                }
+                else if (arr[i] < arr[j] && arr[i] < arr[j - 1]) {
+                    let value = arr[i];
+                    arr.splice(i, 1);
+                    arr.splice(0, 0, value);
+                }
+            }
+            count++;
+        }
+    }
+    console.log(arr);
+    console.log('count:', count);
+    return count;
+}
+runningTime([
+    4,
+    124,
+    513,
+    2,
+    35,
+    64,
+    768,
+    2,
+    64,
+    0,
+    14,
+    2,
+    5,
+    78,
+    43,
+    78,
+    9,
+    99,
 ]);
