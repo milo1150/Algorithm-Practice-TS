@@ -792,66 +792,132 @@ function marsExplorations(s: string): number {
  * Running Time of Algorithms
  * https://www.hackerrank.com/challenges/runningtime/problem
  */
-function runningTime(arr: number[]): number {
-  // console.log(arr);
-  let count: number = 0;
-  for (let i = 1; i < arr.length; i++) {
-    // console.log('current check:', arr[i]);
-    const beforeIndex: number = i - 1;
-    if (beforeIndex === 0) {
-      if (arr[0] === arr[i]) break;
-      else if (arr[0] > arr[i]) {
-        [arr[0], arr[i]] = [arr[i], arr[0]];
-        count++;
-      }
-    } else {
-      for (let j = beforeIndex; j > 0; j--) {
-        // console.log(arr[j]);
-        // console.log('arr[j-1]:', arr[j - 1]);
-        if (arr[i] < arr[j] && arr[i] >= arr[j - 1]) {
-          let value: number = arr[i];
-          // console.log('stop');
-          // console.log(arr);
-          arr.splice(i, 1);
-          arr.splice(j - 1, 0, value);
-          // console.log(arr);
-          // break;
-        } else if (arr[i] < arr[j] && arr[i] < arr[j - 1]) {
-          // console.log('last:', arr[j - 1]);
-          let value: number = arr[i];
-          arr.splice(i, 1);
-          arr.splice(0, 0, value);
-          // console.log(arr);
-          // count++;
-        }
-      }
-      count++;
-    }
-  }
-  console.log(arr);
-  console.log('count:', count);
-  return count;
-}
+// function runningTime(arr: number[]): number {
+//   // console.log(arr);
+//   let count: number = 0;
+//   for (let i = 1; i < arr.length; i++) {
+//     // console.log('current check:', arr[i]);
+//     const beforeIndex: number = i - 1;
+//     if (beforeIndex === 0) {
+//       if (arr[0] === arr[i]) break;
+//       else if (arr[0] > arr[i]) {
+//         [arr[0], arr[i]] = [arr[i], arr[0]];
+//         count++;
+//       }
+//     } else {
+//       for (let j = beforeIndex; j > 0; j--) {
+//         // console.log(arr[j]);
+//         // console.log('arr[j-1]:', arr[j - 1]);
+//         if (arr[i] < arr[j] && arr[i] >= arr[j - 1]) {
+//           let value: number = arr[i];
+//           // console.log('stop');
+//           // console.log(arr);
+//           arr.splice(i, 1);
+//           arr.splice(j - 1, 0, value);
+//           // console.log(arr);
+//           // break;
+//         } else if (arr[i] < arr[j] && arr[i] < arr[j - 1]) {
+//           // console.log('last:', arr[j - 1]);
+//           let value: number = arr[i];
+//           arr.splice(i, 1);
+//           arr.splice(0, 0, value);
+//           // console.log(arr);
+//           // count++;
+//         }
+//       }
+//       count++;
+//     }
+//   }
+//   console.log(arr);
+//   console.log('count:', count);
+//   return count;
+// }
 // runningTime([2, 1, 3, 1, 2]);
 // runningTime([1, 1, 2, 2, 3, 3, 5, 5, 7, 7, 9, 9]);
 // runningTime([10, 9, 8, 7, 6, 5, 4, 3, 2, 1]);
-runningTime([
-  4,
-  124,
-  513,
-  2,
-  35,
-  64,
-  768,
-  2,
-  64,
-  0,
-  14,
-  2,
-  5,
-  78,
-  43,
-  78,
-  9,
-  99,
-]);
+// runningTime([4, 124, 513, 2, 35, 64, 768, 2, 64, 0, 14, 2]);
+
+/**
+ * Pangrams
+ * https://www.hackerrank.com/challenges/pangrams/problem
+ */
+interface pangrams {
+  [index: string]: number;
+}
+function pangrams(s: string): string {
+  const alphabets: string = 'abcdefghijklmnopqrstuvwxyz';
+  const check: pangrams = {};
+  let pangram: string = 'pangram';
+  for (let i of alphabets) if (!check[i]) check[i] = 0;
+  for (let i of s) {
+    if (i !== ' ') {
+      if (i === i.toLowerCase() || i === i.toUpperCase()) {
+        i = i.toLowerCase();
+        check[i] = check[i] + 1;
+      }
+    }
+  }
+  for (let v of Object.values(check)) if (v === 0) pangram = 'not pangram';
+  return pangram;
+}
+// pangrams('We promptly judged antique ivory buckles for the next prize');
+// pangrams('We promptly judged antique ivory buckles for the prize');
+
+/**
+ * HackerRank in a String
+ * https://www.hackerrank.com/challenges/hackerrank-in-a-string/problem
+ */
+type hackkerrankString = 'YES' | 'NO';
+function hackerrankInString(s: string): hackkerrankString {
+  const main: string = 'hackerrank';
+  const arr: string[] = [];
+  let a: number = 0,
+    b: number = 0;
+  while (true) {
+    if (b === s.length) break;
+    if (s.charAt(b) === main.charAt(a)) {
+      arr.push(s.charAt(b));
+      a++;
+    }
+    b++;
+  }
+  if (arr.join('') === main) return 'YES';
+  else return 'NO';
+}
+// hackerrankInString('hereiamstackerrank');
+// hackerrankInString('hackerworld')
+
+/**
+ * Caesar Cipher
+ * https://www.hackerrank.com/challenges/caesar-cipher-1/problem
+ */
+function caesarCipher(s: string, k: number): string {
+  const alphabet: string = 'abcdefghijklmnopqrstuvwxyz';
+  const arr: string[] = alphabet.split('');
+  let str: string = '';
+  function findRotate(i: number, plus: number): string {
+    let newString: number = i + plus;
+    if (newString > arr.length - 1) {
+      newString = newString % arr.length;
+      if (newString === -1) {
+        if (i === 25) return arr[24];
+        else if (i === 0) return arr[25];
+      }
+      return arr[newString];
+    } else return arr[newString];
+  }
+  for (let i of s) {
+    if (arr.includes(i.toLowerCase()) || arr.includes(i.toUpperCase())) {
+      let text: string = i;
+      let newText: string = findRotate(arr.indexOf(i.toLowerCase()), k);
+      if (text === text.toUpperCase()) newText = newText.toUpperCase();
+      str += newText;
+    } else str += i;
+  }
+  // console.log(str);
+  return str;
+}
+// caesarCipher('middle-Outz', 2);
+// caesarCipher("There's-a-starman-waiting-in-the-sky", 3);
+// caesarCipher('www.abc.xy', 87);
+

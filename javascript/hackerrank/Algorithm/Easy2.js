@@ -532,55 +532,73 @@ function marsExplorations(s) {
     }
     return error;
 }
-function runningTime(arr) {
-    let count = 0;
-    for (let i = 1; i < arr.length; i++) {
-        const beforeIndex = i - 1;
-        if (beforeIndex === 0) {
-            if (arr[0] === arr[i])
-                break;
-            else if (arr[0] > arr[i]) {
-                [arr[0], arr[i]] = [arr[i], arr[0]];
-                count++;
+function pangrams(s) {
+    const alphabets = 'abcdefghijklmnopqrstuvwxyz';
+    const check = {};
+    let pangram = 'pangram';
+    for (let i of alphabets)
+        if (!check[i])
+            check[i] = 0;
+    for (let i of s) {
+        if (i !== ' ') {
+            if (i === i.toLowerCase() || i === i.toUpperCase()) {
+                i = i.toLowerCase();
+                check[i] = check[i] + 1;
             }
-        }
-        else {
-            for (let j = beforeIndex; j > 0; j--) {
-                if (arr[i] < arr[j] && arr[i] >= arr[j - 1]) {
-                    let value = arr[i];
-                    arr.splice(i, 1);
-                    arr.splice(j - 1, 0, value);
-                }
-                else if (arr[i] < arr[j] && arr[i] < arr[j - 1]) {
-                    let value = arr[i];
-                    arr.splice(i, 1);
-                    arr.splice(0, 0, value);
-                }
-            }
-            count++;
         }
     }
-    console.log(arr);
-    console.log('count:', count);
-    return count;
+    for (let v of Object.values(check))
+        if (v === 0)
+            pangram = 'not pangram';
+    return pangram;
 }
-runningTime([
-    4,
-    124,
-    513,
-    2,
-    35,
-    64,
-    768,
-    2,
-    64,
-    0,
-    14,
-    2,
-    5,
-    78,
-    43,
-    78,
-    9,
-    99,
-]);
+function hackerrankInString(s) {
+    const main = 'hackerrank';
+    const arr = [];
+    let a = 0, b = 0;
+    while (true) {
+        if (b === s.length)
+            break;
+        if (s.charAt(b) === main.charAt(a)) {
+            arr.push(s.charAt(b));
+            a++;
+        }
+        b++;
+    }
+    if (arr.join('') === main)
+        return 'YES';
+    else
+        return 'NO';
+}
+function caesarCipher(s, k) {
+    const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+    const arr = alphabet.split('');
+    let str = '';
+    function findRotate(i, plus) {
+        let newString = i + plus;
+        if (newString > arr.length - 1) {
+            newString = newString % arr.length;
+            if (newString === -1) {
+                if (i === 25)
+                    return arr[24];
+                else if (i === 0)
+                    return arr[25];
+            }
+            return arr[newString];
+        }
+        else
+            return arr[newString];
+    }
+    for (let i of s) {
+        if (arr.includes(i.toLowerCase()) || arr.includes(i.toUpperCase())) {
+            let text = i;
+            let newText = findRotate(arr.indexOf(i.toLowerCase()), k);
+            if (text === text.toUpperCase())
+                newText = newText.toUpperCase();
+            str += newText;
+        }
+        else
+            str += i;
+    }
+    return str;
+}
