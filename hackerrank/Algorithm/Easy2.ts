@@ -921,3 +921,153 @@ function caesarCipher(s: string, k: number): string {
 // caesarCipher("There's-a-starman-waiting-in-the-sky", 3);
 // caesarCipher('www.abc.xy', 87);
 
+/**
+ * Strong Password
+ * https://www.hackerrank.com/challenges/strong-password/problem
+ */
+interface minNumReg {
+  numbers: RegExp;
+  lower_case: RegExp;
+  upper_case: RegExp;
+  special_characters: RegExp;
+}
+interface minNumCheck {
+  numbers: number;
+  lower_case: number;
+  upper_case: number;
+  special_characters: number;
+}
+function minimumNumber(n: number, password: string): number {
+  const validate: minNumReg = {
+    numbers: /[0-9]/,
+    lower_case: /[a-z]/,
+    upper_case: /[A-Z]/,
+    special_characters: /[-!@#$%^&*()+]/,
+  };
+  const check: minNumCheck = {
+    numbers: 0,
+    lower_case: 0,
+    upper_case: 0,
+    special_characters: 0,
+  };
+  for (let i of password) {
+    if (validate.numbers.test(i)) check.numbers++;
+    else if (validate.lower_case.test(i)) check.lower_case++;
+    else if (validate.upper_case.test(i)) check.upper_case++;
+    else if (validate.special_characters.test(i)) check.special_characters++;
+  }
+  let numToAdd: number = 0;
+  if (check.numbers === 0) numToAdd++;
+  if (check.lower_case === 0) numToAdd++;
+  if (check.upper_case === 0) numToAdd++;
+  if (check.special_characters === 0) numToAdd++;
+  let newLength: number = numToAdd;
+  if (newLength + n < 6) newLength += 6 - (newLength + n);
+  return newLength;
+}
+// minimumNumber(7, 'AUzs-nV');
+// minimumNumber(5, '2bbbb');
+// minimumNumber(11,'#HackerRank')
+// minimumNumber(3,'Ab1')
+
+/**
+ * Strange Counter
+ * https://www.hackerrank.com/challenges/strange-code/problem
+ */
+function strangeCounter(t: number): number {
+  let col: number = 3;
+  let time: number = 3;
+  let r: number = 0;
+  if (t <= 3) return (r = time - t + 1);
+  while (t > time) {
+    col *= 2;
+    time += col;
+    if (time > t) {
+      if (time - t !== 0) r = time - t + 1;
+    } else if (time === t) r = 1;
+  }
+  return r;
+}
+// strangeCounter(4);
+// strangeCounter(1);
+// strangeCounter(9);
+// strangeCounter(21);
+
+/**
+ * Weighted Uniform Strings
+ * https://www.hackerrank.com/challenges/weighted-uniform-string/problem
+ * 8/32 test cases failed :(
+ */
+function weightdUniformStrings(s: string, queries: number[]): string[] {
+  const alphabet: string = ' abcdefghijklmnopqrstuvwxyz';
+  const index: string[] = alphabet.split('');
+  const wString: string[] = [];
+  // console.log(s);
+  // console.log(index);
+  const weight: number[] = [];
+  const count: { [index: string]: number } = {};
+  let i: number = 0;
+  /* V.2 */
+  for (let i of s) {
+    // console.log(i);
+    if (!count[i]) count[i] = 1;
+    else count[i]++;
+  }
+  console.log(count);
+  for (let i of Object.entries(count)) {
+    // console.log(i);
+    let sWeight: number = index.indexOf(i[0]);
+    let strCount: number = i[1];
+    let j: number = 1;
+    while (j <= strCount) {
+      let totalWeight: number = sWeight * j;
+      weight.push(totalWeight);
+      j++;
+    }
+  }
+  // console.log(weight);
+  for (let i of queries) {
+    if (weight.indexOf(i) !== -1) wString.push('Yes');
+    else wString.push('No');
+  }
+  // console.log(wString);
+  return wString;
+}
+// weightdUniformStrings('abbcccdddd', [1, 7, 5, 4, 15]);
+// weightdUniformStrings('abccddde', [1, 3, 12, 5, 9, 10]);
+// weightdUniformStrings('aaabbbbcccddd', [9, 7, 8, 12, 5]);
+
+/**
+ * Funny String
+ * https://www.hackerrank.com/challenges/funny-string/problem
+ */
+type Funny = 'Funny' | 'Not Funny';
+function funnyString(s: string): Funny {
+  let rString: string = s.split('').reverse().join('');
+  let result: Funny = 'Not Funny';
+  let asciiN: number[] = [];
+  let asciiR: number[] = [];
+  const sumN: number[] = [];
+  const sumR: number[] = [];
+  for (let i = 0; i < s.length; i++) {
+    asciiN.push(s.charCodeAt(i));
+    asciiR.push(rString.charCodeAt(i));
+  }
+  for (let j = 0; j <= asciiN.length - 2; j++) {
+    sumN.push(Math.abs(asciiN[j] - asciiN[j + 1]));
+    sumR.push(Math.abs(asciiR[j] - asciiR[j + 1]));
+  }
+  for (let k = 0; k < sumN.length; k++) {
+    if (sumN[k] === sumR[k]) result = 'Funny';
+    else {
+      result = 'Not Funny';
+      break;
+    }
+  }
+  return result;
+}
+// funnyString('lmnop');
+// funnyString('acxz');
+// funnyString('bcxz');
+// funnyString('ivvkxq');
+// funnyString('ivvkx');

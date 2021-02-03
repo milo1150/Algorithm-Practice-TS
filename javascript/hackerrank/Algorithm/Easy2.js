@@ -602,3 +602,115 @@ function caesarCipher(s, k) {
     }
     return str;
 }
+function minimumNumber(n, password) {
+    const validate = {
+        numbers: /[0-9]/,
+        lower_case: /[a-z]/,
+        upper_case: /[A-Z]/,
+        special_characters: /[-!@#$%^&*()+]/,
+    };
+    const check = {
+        numbers: 0,
+        lower_case: 0,
+        upper_case: 0,
+        special_characters: 0,
+    };
+    for (let i of password) {
+        if (validate.numbers.test(i))
+            check.numbers++;
+        else if (validate.lower_case.test(i))
+            check.lower_case++;
+        else if (validate.upper_case.test(i))
+            check.upper_case++;
+        else if (validate.special_characters.test(i))
+            check.special_characters++;
+    }
+    let numToAdd = 0;
+    if (check.numbers === 0)
+        numToAdd++;
+    if (check.lower_case === 0)
+        numToAdd++;
+    if (check.upper_case === 0)
+        numToAdd++;
+    if (check.special_characters === 0)
+        numToAdd++;
+    let newLength = numToAdd;
+    if (newLength + n < 6)
+        newLength += 6 - (newLength + n);
+    return newLength;
+}
+function strangeCounter(t) {
+    let col = 3;
+    let time = 3;
+    let r = 0;
+    if (t <= 3)
+        return (r = time - t + 1);
+    while (t > time) {
+        col *= 2;
+        time += col;
+        if (time > t) {
+            if (time - t !== 0)
+                r = time - t + 1;
+        }
+        else if (time === t)
+            r = 1;
+    }
+    return r;
+}
+function weightdUniformStrings(s, queries) {
+    const alphabet = ' abcdefghijklmnopqrstuvwxyz';
+    const index = alphabet.split('');
+    const wString = [];
+    const weight = [];
+    const count = {};
+    let i = 0;
+    for (let i of s) {
+        if (!count[i])
+            count[i] = 1;
+        else
+            count[i]++;
+    }
+    console.log(count);
+    for (let i of Object.entries(count)) {
+        let sWeight = index.indexOf(i[0]);
+        let strCount = i[1];
+        let j = 1;
+        while (j <= strCount) {
+            let totalWeight = sWeight * j;
+            weight.push(totalWeight);
+            j++;
+        }
+    }
+    for (let i of queries) {
+        if (weight.indexOf(i) !== -1)
+            wString.push('Yes');
+        else
+            wString.push('No');
+    }
+    return wString;
+}
+function funnyString(s) {
+    let rString = s.split('').reverse().join('');
+    let result = 'Not Funny';
+    let asciiN = [];
+    let asciiR = [];
+    const sumN = [];
+    const sumR = [];
+    for (let i = 0; i < s.length; i++) {
+        asciiN.push(s.charCodeAt(i));
+        asciiR.push(rString.charCodeAt(i));
+    }
+    for (let j = 0; j <= asciiN.length - 2; j++) {
+        sumN.push(Math.abs(asciiN[j] - asciiN[j + 1]));
+        sumR.push(Math.abs(asciiR[j] - asciiR[j + 1]));
+    }
+    for (let k = 0; k < sumN.length; k++) {
+        if (sumN[k] === sumR[k])
+            result = 'Funny';
+        else {
+            result = 'Not Funny';
+            break;
+        }
+    }
+    return result;
+}
