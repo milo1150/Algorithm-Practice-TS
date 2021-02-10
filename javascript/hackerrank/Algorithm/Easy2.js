@@ -714,3 +714,165 @@ function funnyString(s) {
     }
     return result;
 }
+function gemstones(arr) {
+    const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+    let gemstones = 0;
+    for (let i = 0; i < alphabet.length; i++) {
+        let count = 0;
+        let char = alphabet.charAt(i);
+        for (let str of arr) {
+            if (str.includes(char))
+                count++;
+            else
+                break;
+        }
+        if (count === arr.length)
+            gemstones++;
+    }
+    return gemstones;
+}
+function alternatingCharacters(s) {
+    let count = 0;
+    for (let i = 1; i < s.length; i++) {
+        if (s.charAt(i - 1) === s.charAt(i))
+            count++;
+    }
+    return count;
+}
+function beautifulBinaryString(b) {
+    let index = 0;
+    let count = 0;
+    while (index !== b.length - 2) {
+        const str = b.charAt(index);
+        if (str === '0') {
+            const strNext = b.charAt(index + 1);
+            const strNextNext = b.charAt(index + 2);
+            if (strNext === '1' && strNextNext === '0') {
+                let strArr = b.split('');
+                strArr[index + 2] = '1';
+                b = strArr.join('');
+                count++;
+            }
+        }
+        index++;
+    }
+    return count;
+}
+function theLoveLetterMystery(s) {
+    let count = 0;
+    for (let i = 0, j = s.length - 1; i < s.length; i++, j--) {
+        const charCode1 = s.charCodeAt(i);
+        const charCode2 = s.charCodeAt(j);
+        if (charCode1 !== charCode2) {
+            let strArr = s.split('');
+            strArr[j] = strArr[i];
+            s = strArr.join('');
+            let diff = Math.abs(charCode1 - charCode2);
+            count += diff;
+        }
+    }
+    return count;
+}
+function closestNumbers(arr) {
+    const arrSort = arr.sort((a, b) => a - b);
+    let minDiff = 0;
+    let minArr = [];
+    for (let i = 0, j = i + 1; i < arrSort.length - 1; i++, j++) {
+        const v1 = arrSort[i];
+        const v2 = arrSort[j];
+        const diff = v2 - v1;
+        if (minDiff === 0) {
+            minDiff = diff;
+            minArr.push(v1);
+            minArr.push(v2);
+        }
+        else if (diff < minDiff) {
+            minArr = [];
+            minArr.push(v1);
+            minArr.push(v2);
+            minDiff = diff;
+        }
+        else if (diff === minDiff) {
+            minArr.push(v1);
+            minArr.push(v2);
+        }
+    }
+    return minArr;
+}
+function findMedian(arr) {
+    const sortArr = arr.sort((a, b) => a - b);
+    const median = Math.floor(sortArr.length / 2);
+    return sortArr[median];
+}
+function gameofThrones(s) {
+    let status = 'YES';
+    const check = {};
+    for (let i of s) {
+        if (!check[i])
+            check[i] = 1;
+        else
+            check[i]++;
+    }
+    const arr = Object.values(check);
+    let evenNum = 0;
+    let oddNum = 0;
+    for (let j of arr) {
+        if (j % 2 === 0)
+            evenNum++;
+        else if (j % 2 !== 0)
+            oddNum++;
+    }
+    if (evenNum === arr.length - 1 && oddNum === 1)
+        status = 'YES';
+    else if (evenNum === arr.length)
+        status = 'YES';
+    else
+        status = 'NO';
+    return status;
+}
+function makingAnagrams(s1, s2) {
+    const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+    let count = 0;
+    for (let str of alphabet) {
+        let countStr1 = 0;
+        let countStr2 = 0;
+        for (let i of s1)
+            if (i === str)
+                countStr1++;
+        for (let j of s2)
+            if (j === str)
+                countStr2++;
+        let diff = Math.abs(countStr1 - countStr2);
+        count += diff;
+    }
+    return count;
+}
+function anagram(s) {
+    let count = 0;
+    const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+    console.log(s);
+    if (s.length % 2 !== 0)
+        return -1;
+    const divided = s.length / 2;
+    let str1 = s.slice(0, divided);
+    let str2 = s.slice(divided, s.length);
+    console.log(str1, str2);
+    let str1Sort = str1
+        .split('')
+        .sort()
+        .filter((value, index, arr) => arr[index] !== arr[index + 1])
+        .join('');
+    let str2Sort = str2
+        .split('')
+        .sort()
+        .filter((value, index, arr) => arr[index] !== arr[index + 1])
+        .join('');
+    console.log(str1Sort, str2Sort);
+    console.log('\n');
+    return count;
+}
+anagram('aaabbb');
+anagram('ab');
+anagram('mnop');
+anagram('xyyx');
+anagram('xaxbbbxx');

@@ -1071,3 +1071,315 @@ function funnyString(s: string): Funny {
 // funnyString('bcxz');
 // funnyString('ivvkxq');
 // funnyString('ivvkx');
+
+/**
+ * Separate the Numbers
+ * https://www.hackerrank.com/challenges/separate-the-numbers/problem
+ */
+// function separateNUmbers(s: string): string {
+//   let test: number = 0;
+//   console.log('start string:', s);
+//   console.log('string.length:', s.length);
+//   let index: number = 1;
+//   let indexNext: number = index + 1;
+//   let status: 'YES' | 'NO' = 'NO';
+//   const limit: number = Math.round(s.length / 2);
+//   // while (test < 1) {
+//   while (index < s.length) {
+//     let checkNum: string[] = [];
+//     for (let i = index, j = 0; i <= s.length; i += index, j += index) {
+//       console.log('string cut:', s.substring(j, i));
+//       checkNum.push(s.substring(j, i));
+//       console.log(checkNum);
+//       /* CHECK IF NEW VALUE IS EQUAL LAST VALUE + 1 */
+//       if (checkNum.length > 1) {
+//         let last: number = parseInt(checkNum[checkNum.length - 1]);
+//         let beforeLast: number = parseInt(checkNum[checkNum.length - 2]);
+//         // console.log(last, beforeLast);
+//         if (last !== beforeLast + 1) {
+//           // console.log('last:', last);
+//           status = 'NO';
+//           break;
+//         } else status = 'YES';
+//       }
+//     }
+//     console.log('status ROUND 1:', status);
+//     if (status === 'YES') break;
+//     else {
+//       checkNum = [];
+//       let times: number = 1;
+//       let maxTimes: number = Math.round(s.length / 2);
+//       let sIndexNext: number = index;
+//       let jIndexNext: number = 0;
+//       console.log('index:', index, 'nextIndex:', indexNext);
+//       while (times <= maxTimes) {
+//         if (times === 1) {
+//           console.log('string cut:', s.substring(jIndexNext, index));
+//           checkNum.push(s.substring(jIndexNext, index));
+//           jIndexNext += index;
+//           sIndexNext += indexNext;
+//         } else if (times === 2) {
+//           console.log('string cut:', s.substring(jIndexNext, sIndexNext));
+//           checkNum.push(s.substring(jIndexNext, sIndexNext));
+//           jIndexNext += indexNext;
+//           sIndexNext += indexNext;
+//         } else {
+//           console.log('string cut:', s.substring(jIndexNext, sIndexNext));
+//           checkNum.push(s.substring(jIndexNext, sIndexNext));
+//           jIndexNext += indexNext;
+//           sIndexNext += indexNext;
+//         }
+//         console.log(checkNum);
+//         /* CHECK IF NEW VALUE IS EQUAL LAST VALUE + 1 */
+//         if (checkNum.length > 1) {
+//           let last: number = parseInt(checkNum[checkNum.length - 1]);
+//           let beforeLast: number = parseInt(checkNum[checkNum.length - 2]);
+//           if (last !== beforeLast + 1) {
+//             // console.log('last:', last);
+//             status = 'NO';
+//             break;
+//           } else status = 'YES';
+//         }
+//         console.log('status ROUND 2:', status);
+//         // if (status === 'YES') break;
+//         times++;
+//       }
+//     }
+//     console.log('status end of loop:', status);
+//     if (status === 'NO') {
+//       index++;
+//       indexNext++;
+//     } else if (status === 'YES') {
+//       console.log(checkNum);
+//       break;
+//     }
+//     console.log('\n');
+//     // test++;
+//   }
+//   console.log('STATUS RETURN:', status);
+//   // console.log('\n');
+// }
+// separateNUmbers('1234');
+// separateNUmbers('91011');
+// separateNUmbers('99100');
+// separateNUmbers('101103');
+// separateNUmbers('010203');
+// separateNUmbers('13');
+// separateNUmbers('1');
+
+// separateNUmbers('99910001001') //YES 999
+// separateNUmbers('7891011'); //yes7
+// separateNUmbers('9899100'); //yes 98
+// separateNUmbers('999100010001'); //no
+
+/**
+ * Gemstones
+ * https://www.hackerrank.com/challenges/gem-stones/problem
+ */
+function gemstones(arr: string[]): number {
+  const alphabet: string = 'abcdefghijklmnopqrstuvwxyz';
+  let gemstones: number = 0;
+  for (let i = 0; i < alphabet.length; i++) {
+    let count: number = 0;
+    let char: string = alphabet.charAt(i);
+    for (let str of arr) {
+      if (str.includes(char)) count++;
+      else break;
+    }
+    if (count === arr.length) gemstones++;
+  }
+  return gemstones;
+}
+// gemstones(['abcdde', 'baccd', 'eeabg']);
+
+/**
+ * Alternting Characters
+ * https://www.hackerrank.com/challenges/alternating-characters/problem
+ */
+function alternatingCharacters(s: string): number {
+  let count: number = 0;
+  for (let i = 1; i < s.length; i++) {
+    if (s.charAt(i - 1) === s.charAt(i)) count++;
+  }
+  return count;
+}
+// alternatingCharacters('AAAA');
+
+/**
+ * Beautiful Binary String
+ * https://www.hackerrank.com/challenges/beautiful-binary-string/problem
+ */
+function beautifulBinaryString(b: string): number {
+  let index: number = 0;
+  let count: number = 0;
+  while (index !== b.length - 2) {
+    const str: string = b.charAt(index);
+    if (str === '0') {
+      const strNext: string = b.charAt(index + 1);
+      const strNextNext: string = b.charAt(index + 2);
+      if (strNext === '1' && strNextNext === '0') {
+        let strArr: string[] = b.split('');
+        strArr[index + 2] = '1';
+        b = strArr.join('');
+        count++;
+      }
+    }
+    index++;
+  }
+  return count;
+}
+// beautifulBinaryString('0101010');
+// beautifulBinaryString('01100');
+// beautifulBinaryString('0100101010');
+
+/**
+ * The Love-Letter Mystery
+ * https://www.hackerrank.com/challenges/the-love-letter-mystery/problem
+ */
+function theLoveLetterMystery(s: string): number {
+  let count: number = 0;
+  for (let i = 0, j = s.length - 1; i < s.length; i++, j--) {
+    const charCode1: number = s.charCodeAt(i);
+    const charCode2: number = s.charCodeAt(j);
+    if (charCode1 !== charCode2) {
+      let strArr: string[] = s.split('');
+      strArr[j] = strArr[i];
+      s = strArr.join('');
+      let diff: number = Math.abs(charCode1 - charCode2);
+      count += diff;
+    }
+  }
+  return count;
+}
+// theLoveLetterMystery('abc');
+// theLoveLetterMystery('abcba');
+// theLoveLetterMystery('abcd');
+// theLoveLetterMystery('cba');
+
+/**
+ * Closest Nubmers
+ * https://www.hackerrank.com/challenges/closest-numbers/problem
+ */
+function closestNumbers(arr: number[]): number[] {
+  const arrSort: number[] = arr.sort((a, b) => a - b);
+  let minDiff: number = 0;
+  let minArr: number[] = [];
+  for (let i = 0, j = i + 1; i < arrSort.length - 1; i++, j++) {
+    const v1: number = arrSort[i];
+    const v2: number = arrSort[j];
+    const diff: number = v2 - v1;
+    if (minDiff === 0) {
+      minDiff = diff;
+      minArr.push(v1);
+      minArr.push(v2);
+    } else if (diff < minDiff) {
+      minArr = [];
+      minArr.push(v1);
+      minArr.push(v2);
+      minDiff = diff;
+    } else if (diff === minDiff) {
+      minArr.push(v1);
+      minArr.push(v2);
+    }
+  }
+  return minArr;
+}
+// closestNumbers([5, 4, 3, 2, 1]);
+
+/**
+ * Find the Median
+ * https://www.hackerrank.com/challenges/find-the-median/problem
+ */
+function findMedian(arr: number[]): number {
+  const sortArr: number[] = arr.sort((a, b) => a - b);
+  const median: number = Math.floor(sortArr.length / 2);
+  return sortArr[median];
+}
+// findMedian([0, 1, 2, 4, 6, 5, 3]);
+
+/**
+ * Game of Thrones - I
+ * https://www.hackerrank.com/challenges/game-of-thrones/problem
+ */
+function gameofThrones(s: string): 'YES' | 'NO' {
+  let status: 'YES' | 'NO' = 'YES';
+  const check: { [index: string]: number } = {};
+  for (let i of s) {
+    if (!check[i]) check[i] = 1;
+    else check[i]++;
+  }
+  const arr: number[] = Object.values(check);
+  let evenNum: number = 0;
+  let oddNum: number = 0;
+  for (let j of arr) {
+    if (j % 2 === 0) evenNum++;
+    else if (j % 2 !== 0) oddNum++;
+  }
+  if (evenNum === arr.length - 1 && oddNum === 1) status = 'YES';
+  else if (evenNum === arr.length) status = 'YES';
+  else status = 'NO';
+  return status;
+}
+// gameofThrones('aaabbbb');
+// gameofThrones('cdefghmnopqrstuvw');
+// gameofThrones('cdcdcdcdeeeef');
+
+/**
+ * Making Anagrams
+ * https://www.hackerrank.com/challenges/making-anagrams/problem
+ */
+function makingAnagrams(s1: string, s2: string): number {
+  const alphabet: string = 'abcdefghijklmnopqrstuvwxyz';
+  let count: number = 0;
+  for (let str of alphabet) {
+    let countStr1: number = 0;
+    let countStr2: number = 0;
+    for (let i of s1) if (i === str) countStr1++;
+    for (let j of s2) if (j === str) countStr2++;
+    let diff: number = Math.abs(countStr1 - countStr2);
+    count += diff;
+  }
+  return count;
+}
+// makingAnagrams('cde', 'abc');
+// makingAnagrams('abc', 'amnop');
+// makingAnagrams(
+//   'absdjkvuahdakejfnfauhdsaavasdlkj',
+//   'djfladfhiawasdkjvalskufhafablsdkashlahdfa'
+// );
+
+/**
+ * Anagram
+ * https://www.hackerrank.com/challenges/anagram/problem
+ */
+type countStr = { [index: string]: number };
+function anagram(s: string): number {
+  let count: number = 0;
+  const alphabet: string = 'abcdefghijklmnopqrstuvwxyz';
+  console.log(s);
+  if (s.length % 2 !== 0) return -1;
+  const divided: number = s.length / 2;
+  let str1: string = s.slice(0, divided);
+  let str2: string = s.slice(divided, s.length);
+  console.log(str1, str2);
+
+  let str1Sort: string = str1
+    .split('')
+    .sort()
+    .filter((value, index, arr) => arr[index] !== arr[index + 1])
+    .join('');
+  let str2Sort: string = str2
+    .split('')
+    .sort()
+    .filter((value, index, arr) => arr[index] !== arr[index + 1])
+    .join('');
+  console.log(str1Sort, str2Sort);
+  console.log('\n');
+  return count;
+}
+anagram('aaabbb');
+anagram('ab');
+// anagram('abc');
+anagram('mnop');
+anagram('xyyx');
+anagram('xaxbbbxx');
