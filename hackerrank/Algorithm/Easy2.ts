@@ -1352,34 +1352,60 @@ function makingAnagrams(s1: string, s2: string): number {
  * Anagram
  * https://www.hackerrank.com/challenges/anagram/problem
  */
-type countStr = { [index: string]: number };
-function anagram(s: string): number {
-  let count: number = 0;
-  const alphabet: string = 'abcdefghijklmnopqrstuvwxyz';
-  console.log(s);
-  if (s.length % 2 !== 0) return -1;
-  const divided: number = s.length / 2;
-  let str1: string = s.slice(0, divided);
-  let str2: string = s.slice(divided, s.length);
-  console.log(str1, str2);
+// type countStr = { [index: string]: number };
+// function anagram(s: string): number {
+//   const alphabet: string = 'abcdefghijklmnopqrstuvwxyz';
+//   console.log(s);
+//   if (s.length % 2 !== 0) return -1;
+//   const divided: number = s.length / 2;
+//   let str1: string = s.slice(0, divided);
+//   let str2: string = s.slice(divided, s.length);
+//   console.log(str1, str2);
+//   console.log(str1.split('').sort().join(''), str2.split('').sort().join(''));
 
-  let str1Sort: string = str1
-    .split('')
-    .sort()
-    .filter((value, index, arr) => arr[index] !== arr[index + 1])
-    .join('');
-  let str2Sort: string = str2
-    .split('')
-    .sort()
-    .filter((value, index, arr) => arr[index] !== arr[index + 1])
-    .join('');
-  console.log(str1Sort, str2Sort);
-  console.log('\n');
-  return count;
-}
-anagram('aaabbb');
-anagram('ab');
-// anagram('abc');
-anagram('mnop');
-anagram('xyyx');
-anagram('xaxbbbxx');
+//   let count1: countStr = {};
+//   let count2: countStr = {};
+//   for (let i = 0; i < str1.length; i++) {
+//     if (!count1[str1.charAt(i)]) count1[str1.charAt(i)] = 1;
+//     else count1[str1.charAt(i)]++;
+//     if (!count2[str2.charAt(i)]) count2[str2.charAt(i)] = 1;
+//     else count2[str2.charAt(i)]++;
+//   }
+//   console.log(count1, count2);
+
+//   let countA: number = 0;
+//   let countB: number = 0;
+//   for (let i of Object.entries(count1)) {
+//     let v1: number = i[1];
+//     let v2: number = count2[i[0]];
+//     if (v2) {
+//       let sum: number = v1 - v2;
+//       if (sum > 0) countA++;
+//     } else countA += v1;
+//   }
+//   for (let i of Object.entries(count2)) {
+//     let v1: number = i[1];
+//     let v2: number = count1[i[0]];
+//     if (v2) {
+//       let sum: number = v1 - v2;
+//       if (sum > 0) countB++;
+//     } else countB += v1;
+//   }
+//   console.log('countA:', countA, 'countB:', countB);
+
+//   let min: number;
+//   countA < countB ? (min = countA) : (min = countB);
+//   console.log(min);
+
+//   console.log('\n');
+//   if (min === 0) return 0;
+//   else return min;
+// }
+// anagram('aaabbb');
+// anagram('ab');
+// anagram('mnop');
+// anagram('xyyx');
+// anagram('xaxbbbxx');
+// anagram('asdfjoieufoa');
+// anagram('fdhlvosfpafhalll');
+// anagram('mvdalvkiopaufl');

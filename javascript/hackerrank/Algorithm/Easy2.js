@@ -847,32 +847,3 @@ function makingAnagrams(s1, s2) {
     }
     return count;
 }
-function anagram(s) {
-    let count = 0;
-    const alphabet = 'abcdefghijklmnopqrstuvwxyz';
-    console.log(s);
-    if (s.length % 2 !== 0)
-        return -1;
-    const divided = s.length / 2;
-    let str1 = s.slice(0, divided);
-    let str2 = s.slice(divided, s.length);
-    console.log(str1, str2);
-    let str1Sort = str1
-        .split('')
-        .sort()
-        .filter((value, index, arr) => arr[index] !== arr[index + 1])
-        .join('');
-    let str2Sort = str2
-        .split('')
-        .sort()
-        .filter((value, index, arr) => arr[index] !== arr[index + 1])
-        .join('');
-    console.log(str1Sort, str2Sort);
-    console.log('\n');
-    return count;
-}
-anagram('aaabbb');
-anagram('ab');
-anagram('mnop');
-anagram('xyyx');
-anagram('xaxbbbxx');
