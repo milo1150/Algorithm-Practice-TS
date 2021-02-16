@@ -174,3 +174,117 @@ function gridChallenge(grid) {
     }
     return status;
 }
+function marcsCakewalk(calorie) {
+    let arr = calorie.sort((a, b) => b - a);
+    let sum = 0;
+    for (let i = 0; i < arr.length; i++) {
+        sum += arr[i] * Math.pow(2, i);
+    }
+    return sum;
+}
+function toys(w) {
+    const arr = w.sort((a, b) => a - b);
+    let i = 0;
+    let start = arr[0];
+    let arrP = [];
+    const stack = [];
+    while (i < w.length) {
+        if (arr[i] <= start + 4) {
+            arrP.push(arr[i]);
+        }
+        else {
+            stack.push(arrP);
+            arrP = [];
+            arrP.push(arr[i]);
+            start = arr[i];
+        }
+        i++;
+    }
+    stack.push(arrP);
+    return stack.length;
+}
+function maximumToys(prices, k) {
+    let count = 0;
+    let start = 0;
+    const arr = prices.sort((a, b) => a - b);
+    for (let i of arr) {
+        start += i;
+        if (start < k)
+            count++;
+        else
+            break;
+    }
+    return count;
+}
+function jimOrders(orders) {
+    const sum = [];
+    const obj = {};
+    for (let i = 0; i < orders.length; i++) {
+        if (!obj[i + 1])
+            obj[i + 1] = orders[i][0] + orders[i][1];
+    }
+    let arr = Object.entries(obj);
+    arr = arr.sort(([, a], [, b]) => a - b);
+    for (let j = 0; j < arr.length; j++) {
+        sum.push(parseInt(arr[j][0]));
+    }
+    return sum;
+}
+function twoArrays(k, A, B) {
+    let status = 'YES';
+    const a = A.sort((a, b) => a - b);
+    const b = B.sort((a, b) => b - a);
+    for (let i = 0; i < A.length; i++) {
+        if (a[i] + b[i] < k) {
+            status = 'NO';
+            break;
+        }
+    }
+    return status;
+}
+function lonelyinteger(a) {
+    const obj = {};
+    let lonely = 0;
+    for (let i of a) {
+        if (!obj[i])
+            obj[i] = 1;
+        else
+            obj[i]++;
+    }
+    for (let v of Object.entries(obj)) {
+        if (v[1] === 1) {
+            lonely = parseInt(v[0]);
+            break;
+        }
+    }
+    return lonely;
+}
+function maximizingXor(l, r) {
+    let max = 0;
+    for (let i = l; i <= r; i++) {
+        for (let j = i; j <= r; j++) {
+            let numA = i.toString(2);
+            let numB = j.toString(2);
+            let sum = [];
+            for (let i = numB.length - 1, k = numA.length - 1; i >= 0; i--, k--) {
+                if (numA.charAt(k)) {
+                    if (numA.charAt(k) === '0' && numB.charAt(i) === '0')
+                        sum.unshift('0');
+                    else if (numA.charAt(k) === '1' && numB.charAt(i) === '1')
+                        sum.unshift('0');
+                    else if (numA.charAt(k) === '0' && numB.charAt(i) === '1')
+                        sum.unshift('1');
+                    else if (numA.charAt(k) === '1' && numB.charAt(i) === '0')
+                        sum.unshift('1');
+                }
+                else {
+                    sum.unshift(numB.charAt(i));
+                }
+            }
+            let num = parseInt(sum.join(''), 2);
+            if (num > max)
+                max = num;
+        }
+    }
+    return max;
+}

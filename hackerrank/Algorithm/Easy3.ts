@@ -273,3 +273,161 @@ function gridChallenge(grid: string[]): gridEx {
 // gridChallenge(['ppp', 'ypp', 'wyw']);
 // gridChallenge(['lyivr', 'jgfew', 'uweor', 'qxwyr', 'uikjd']);
 // gridChallenge(['l']);
+
+/**
+ * Marc's Cakewalk
+ * https://www.hackerrank.com/challenges/marcs-cakewalk/problem
+ */
+function marcsCakewalk(calorie: number[]): number {
+  let arr: number[] = calorie.sort((a, b) => b - a);
+  let sum: number = 0;
+  for (let i = 0; i < arr.length; i++) {
+    sum += arr[i] * 2 ** i;
+  }
+  return sum;
+}
+// marcsCakewalk([7, 4, 9, 6]);
+
+/**
+ * Priyanka and Toys
+ * https://www.hackerrank.com/challenges/priyanka-and-toys/problem
+ */
+function toys(w: number[]): number {
+  const arr: number[] = w.sort((a, b) => a - b);
+  let i: number = 0;
+  let start: number = arr[0];
+  let arrP: number[] = [];
+  const stack: Array<number[]> = [];
+  while (i < w.length) {
+    if (arr[i] <= start + 4) {
+      arrP.push(arr[i]);
+    } else {
+      stack.push(arrP);
+      arrP = [];
+      arrP.push(arr[i]);
+      start = arr[i];
+    }
+    i++;
+  }
+  stack.push(arrP);
+  return stack.length;
+}
+// toys([1, 2, 3, 21, 7, 12, 14, 21]);
+
+/**
+ * Mark and Toys
+ * https://www.hackerrank.com/challenges/mark-and-toys/problem
+ */
+function maximumToys(prices: number[], k: number): number {
+  let count: number = 0;
+  let start: number = 0;
+  const arr: number[] = prices.sort((a, b) => a - b);
+  for (let i of arr) {
+    start += i;
+    if (start < k) count++;
+    else break;
+  }
+  return count;
+}
+
+// maximumToys([1, 12, 5, 111, 200, 1000, 10], 50);
+
+/**
+ * Jim and the orders
+ * https://www.hackerrank.com/challenges/jim-and-the-orders/problem
+ */
+function jimOrders(orders: Array<number[]>): number[] {
+  const sum: number[] = [];
+  const obj: { [index: string]: number } = {};
+  for (let i = 0; i < orders.length; i++) {
+    if (!obj[i + 1]) obj[i + 1] = orders[i][0] + orders[i][1];
+  }
+  let arr: Array<[string, number]> = Object.entries(obj);
+  arr = arr.sort(([, a], [, b]) => a - b);
+  for (let j = 0; j < arr.length; j++) {
+    sum.push(parseInt(arr[j][0]));
+  }
+  return sum;
+}
+// jimOrders([
+//   [8, 1],
+//   [4, 2],
+//   [5, 6],
+//   [3, 1],
+//   [4, 3],
+// ]);
+
+/**
+ * Permuting Two Arrays
+ * https://www.hackerrank.com/challenges/two-arrays/problem
+ */
+type Permuting = 'YES' | 'NO';
+function twoArrays(k: number, A: number[], B: number[]): Permuting {
+  let status: Permuting = 'YES';
+  const a: number[] = A.sort((a, b) => a - b);
+  const b: number[] = B.sort((a, b) => b - a);
+  for (let i = 0; i < A.length; i++) {
+    if (a[i] + b[i] < k) {
+      status = 'NO';
+      break;
+    }
+  }
+  return status;
+}
+// twoArrays(10, [2, 1, 3], [7, 8, 9]);
+// twoArrays(5, [1, 2, 2, 1], [3, 3, 3, 4]);
+
+/**
+ * Lonely Integer
+ * https://www.hackerrank.com/challenges/lonely-integer/problem
+ */
+function lonelyinteger(a: number[]): number {
+  const obj: { [index: string]: number } = {};
+  let lonely: number = 0;
+  for (let i of a) {
+    if (!obj[i]) obj[i] = 1;
+    else obj[i]++;
+  }
+  for (let v of Object.entries(obj)) {
+    if (v[1] === 1) {
+      lonely = parseInt(v[0]);
+      break;
+    }
+  }
+  return lonely;
+}
+// lonelyinteger([0, 0, 1, 2, 1]);
+
+/**
+ * Maximizing XOR
+ * https://www.hackerrank.com/challenges/maximizing-xor/problem
+ */
+function maximizingXor(l: number, r: number): number {
+  let max: number = 0;
+  for (let i = l; i <= r; i++) {
+    for (let j = i; j <= r; j++) {
+      let numA: string = i.toString(2);
+      let numB: string = j.toString(2);
+      let sum: string[] = [];
+      for (let i = numB.length - 1, k = numA.length - 1; i >= 0; i--, k--) {
+        if (numA.charAt(k)) {
+          if (numA.charAt(k) === '0' && numB.charAt(i) === '0')
+            sum.unshift('0');
+          else if (numA.charAt(k) === '1' && numB.charAt(i) === '1')
+            sum.unshift('0');
+          else if (numA.charAt(k) === '0' && numB.charAt(i) === '1')
+            sum.unshift('1');
+          else if (numA.charAt(k) === '1' && numB.charAt(i) === '0')
+            sum.unshift('1');
+        } else {
+          sum.unshift(numB.charAt(i));
+        }
+      }
+      let num: number = parseInt(sum.join(''), 2);
+      if (num > max) max = num;
+    }
+  }
+  return max;
+}
+// maximizingXor(10, 15);
+// maximizingXor(11, 100);
