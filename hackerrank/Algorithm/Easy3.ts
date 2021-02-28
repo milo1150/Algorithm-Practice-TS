@@ -400,9 +400,9 @@ function lonelyinteger(a: number[]): number {
 
 /**
  * Maximizing XOR
- * https://www.hackerrank.com/challenges/maximizing-xor/problem
+ * https://www.hackerrank.com/challenges/testzing-xor/problem
  */
-function maximizingXor(l: number, r: number): number {
+function testzingXor(l: number, r: number): number {
   let max: number = 0;
   for (let i = l; i <= r; i++) {
     for (let j = i; j <= r; j++) {
@@ -430,4 +430,50 @@ function maximizingXor(l: number, r: number): number {
   return max;
 }
 // maximizingXor(10, 15);
-// maximizingXor(11, 100);
+
+/**
+ * Flipping bits
+ * https://www.hackerrank.com/challenges/flipping-bits/problem
+ */
+function flippingBits(N: number): number {
+  let str: string = '';
+  const BinaryNumber: string = N.toString(2);
+  const length: number = N.toString(2).length;
+  for (let i = 0; i < 32 - length; i++) str += '1';
+  for (let j = 0; j < BinaryNumber.length; j++) {
+    if (BinaryNumber.charAt(j) === '0') str += '1';
+    else if (BinaryNumber.charAt(j) === '1') str += '0';
+  }
+  return parseInt(str, 2);
+}
+// flippingBits(2147483647);
+// flippingBits(1);
+// flippingBits(0);
+
+/**
+ * Sum vs XOR
+ * https://www.hackerrank.com/challenges/sum-vs-xor/problem
+ * Time limit exceeded
+ */
+function sumXor(n: number): number {
+  let count: number = 0;
+  for (let i = 0; i <= n; i++) {
+    const sum: number = n + i;
+    let nBinary: string = n.toString(2);
+    let iBinary: string = i.toString(2);
+    let arr: string[] | string = [];
+    for (let j = nBinary.length - 1, k = iBinary.length - 1; j >= 0; j--, k--) {
+      if (nBinary.charAt(j) === iBinary.charAt(k)) arr.unshift('0');
+      else if (iBinary.charAt(k) === '') break;
+      else if (nBinary.charAt(j) !== iBinary.charAt(k)) arr.unshift('1');
+    }
+    let sumBinary: string =
+      nBinary.slice(0, nBinary.length - arr.length) + arr.join('');
+    if (sum === parseInt(sumBinary, 2)) count++;
+  }
+  return count;
+}
+// sumXor(0);
+// sumXor(4);
+// sumXor(5);
+// sumXor(10);

@@ -259,7 +259,7 @@ function lonelyinteger(a) {
     }
     return lonely;
 }
-function maximizingXor(l, r) {
+function testzingXor(l, r) {
     let max = 0;
     for (let i = l; i <= r; i++) {
         for (let j = i; j <= r; j++) {
@@ -287,4 +287,39 @@ function maximizingXor(l, r) {
         }
     }
     return max;
+}
+function flippingBits(N) {
+    let str = '';
+    const BinaryNumber = N.toString(2);
+    const length = N.toString(2).length;
+    for (let i = 0; i < 32 - length; i++)
+        str += '1';
+    for (let j = 0; j < BinaryNumber.length; j++) {
+        if (BinaryNumber.charAt(j) === '0')
+            str += '1';
+        else if (BinaryNumber.charAt(j) === '1')
+            str += '0';
+    }
+    return parseInt(str, 2);
+}
+function sumXor(n) {
+    let count = 0;
+    for (let i = 0; i <= n; i++) {
+        const sum = n + i;
+        let nBinary = n.toString(2);
+        let iBinary = i.toString(2);
+        let arr = [];
+        for (let j = nBinary.length - 1, k = iBinary.length - 1; j >= 0; j--, k--) {
+            if (nBinary.charAt(j) === iBinary.charAt(k))
+                arr.unshift('0');
+            else if (iBinary.charAt(k) === '')
+                break;
+            else if (nBinary.charAt(j) !== iBinary.charAt(k))
+                arr.unshift('1');
+        }
+        let sumBinary = nBinary.slice(0, nBinary.length - arr.length) + arr.join('');
+        if (sum === parseInt(sumBinary, 2))
+            count++;
+    }
+    return count;
 }
